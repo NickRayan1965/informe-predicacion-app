@@ -1,1 +1,9 @@
-<app-territories-table></app-territories-table>
+<div class="container">
+  <h1 class="text-center">Gestión de territorios</h1>
+  <div class="container my-2 d-flex justify-content-end">
+    <button type="button" class="btn btn-primary" (click)="openTerritoryForm()">Nuevo</button>
+  </div>
+  <app-territories-table [isForSelection]="isForSelection" (onSelectTerritory)="selectTerritory($event)"></app-territories-table>
+  <app-territory-form [modalId]="'createTerritoryForm'" (saveEvent)="saveTerritoryEvent()"></app-territory-form> 
+</div>
+

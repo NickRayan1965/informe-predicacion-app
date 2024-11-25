@@ -1,0 +1,22 @@
+<app-modal [modalId]="modalId">
+  <div class="modal-header">
+    <div class="container">
+      <h2 class="text-center">
+        {{isEdit ? 'Editar' : 'Crear'}} territorio
+      </h2>
+    </div>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="territoryFormGroup" (ngSubmit)="onSubmit()" id="territoryForm">
+      <div class="mb-3">
+        <label class="form-label" for="name">Nombre</label>
+        <input type="text" class="form-control" id="name" formControlName="name" maxlength="50">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="description">Descripción</label>
+        <textarea class="form-control" id="description" rows="3" maxlength="250" formControlName="description">
+        </textarea>
+      </div>
+    </form>
+  </div>
+</app-modal>

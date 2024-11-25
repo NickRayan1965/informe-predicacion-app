@@ -1,38 +1,4 @@
-
-<div class="container bg-danger col-4" data-bs-theme="dark">
-  <table class="table table-striped mb-1 col-12">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Nombre</th>
-        <th>Descripción</th>
-      </tr>
-    </thead>
-    <tbody *ngIf="territoriesContent">
-      <tr *ngFor="let territory of territoriesContent.data">
-        <td>{{ territory.id }}</td>
-        <td>{{ territory.name }}</td>
-        <td>{{ territory.description }}</td>
-      </tr>
-  </table>
-  <nav aria-label="Page navigation example" class="d-flex justify-content-center">
-    <ul class="pagination">
-      <li class="page-item">
-        <button class="page-link" aria-label="Anterior" [ngClass]="{ 'disabled': (territoriesContent.page - maxSelectablePages) <= 0 }"> 
-          <span aria-hidden="true">&laquo;</span>
-        </button>
-      </li>
-      <li class="page-item" *ngFor="let i of rangeForPages()" [ngClass]="{ 'active': i === territoriesContent.page }">
-        <button class="page-link" (click)="changePage(i)">
-          {{i}}
-        </button>
-      </li>
-      <li class="page-item">
-        <button class="page-link"aria-label="Siguiente" (click)="nextSection()">
-          <span aria-hidden="true">&raquo;</span>
-        </button>
-      </li>
-    </ul>
-  </nav>
-  
-</div>
+<app-pageable-table [httpService]="territoryService" [maxSelectablePages]="maxSelectablePages"  [queryParams]="queryParams" [tableItemsConfig]="tableItemsConfig"
+(onSelectItem)="selectTerritory($event)"
+[isForSelection]="isForSelection"
+></app-pageable-table>
