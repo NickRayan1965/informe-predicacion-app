@@ -1,11 +1,14 @@
-import { Injectable, Renderer2 } from '@angular/core';
+import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CssService {
-  constructor(private readonly renderer: Renderer2) {}
+  private renderer: Renderer2;
+  constructor(private readonly rendererFactory: RendererFactory2) {
+    this.renderer = this.rendererFactory.createRenderer(null, null);
 
+  }
   addDinamicClass(className: string, styles: { [key: string]: string }): void {
     const styleElement = this.renderer.createElement('style');
     let styleContent = `.${className} {`;

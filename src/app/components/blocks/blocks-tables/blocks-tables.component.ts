@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { PageableTableComponent } from '../../shared/pageable-table/pageable-table.component';
-import { GetBlocksQueryParamsDto } from '../../../model/dtos/GetBlocksQueryParamsDto';
+import { GetBlocksQueryParamsDto } from '../../../dtos/GetBlocksQueryParamsDto';
 import { TableItemConfig } from '../../../model/TableConfig';
 import { BlockService } from '../../../services/BlockService';
 
@@ -13,10 +13,11 @@ import { BlockService } from '../../../services/BlockService';
 })
 export class BlocksTablesComponent implements OnInit {
   @ViewChild(PageableTableComponent) pageableTableComponent: PageableTableComponent;
+  @Input() tableClasses: string[] = [];
   maxSelectablePages = 3;
   queryParams: GetBlocksQueryParamsDto;
   tableItemsConfig: TableItemConfig[] = [
-    { columnLabel: 'Id', columnName: 'id' },
+    //{ columnLabel: 'Id', columnName: 'id' },
     { columnLabel: 'Nombre', columnName: 'name' },
     { columnLabel: 'Descripción', columnName: 'description' },
     { columnLabel: 'Territorio', columnName: 'territoryName' }
@@ -26,7 +27,6 @@ export class BlocksTablesComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.queryParams = new GetBlocksQueryParamsDto();
-    this.queryParams.pageSize = 5;
   }
   getData(): void {
     this.pageableTableComponent.getData();

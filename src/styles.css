@@ -19,10 +19,10 @@
   pointer-events: none;
 }
 
-.shadow-30 {
+.shadow-0 {
   position: relative;
 }
-.shadow-30::before {
+.shadow-0::before {
   content: "";
   position: absolute;
   top: 0;

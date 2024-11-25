@@ -3,20 +3,14 @@
 >
   <div class="modal-dialog" style="cursor: default;">
     <div class="modal-content shadow" #modalContent>
-      <div class="modal-header bg-info" style="height: 30px;"
+      <div class="modal-header" style="height: 30px; background-color: #f8f9fa;"
+        
       (mousedown)="startDragging($event)"
       (mouseup)="stopDragging()"
       (mousemove)="drag($event)"
       style="cursor: move;">
       </div>
       <ng-content></ng-content>
-      <div class="modal-footer">
-        <button type="button" class="d-none" data-bs-dismiss="modal"
-          [id]="closeModalBtnId"></button>
-        <button type="button" class="btn btn-secondary" (click)="closeModal()">
-          Cerrar
-        </button>
-      </div>
     </div>
   </div>
 </div>

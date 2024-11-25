@@ -1,7 +1,7 @@
-<div class="container">
+<div>
   <h1 class="text-center">Gestión de Manzanas</h1>
   <div class="my-2 d-flex justify-content-end">
-    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#createBlockForm" >Nuevo</button>
+    <button type="button" class="btn btn-primary me-2" (click)="openBlockForm()">Nuevo</button>
     <button type="button" class="btn btn-info" (click)="getData()">
       <span class="me-1">Buscar</span>
       <i class="fa-solid fa-search"></i>
@@ -24,6 +24,10 @@
     <app-blocks-tables></app-blocks-tables>
   </div>
 </div>
-<app-modal [modalId]="selectTerritoryModalId">
+<app-block-form [modalId]="blockFormModalId" #blockForm (saveEvent)="onSaveBlock()"></app-block-form>
+<app-modal [modalId]="selectTerritoryModalId" #territoriesModalComponent>
   <app-territory-management [isForSelection]="true" (onSelectTerritory)="onSelectTerritory($event)"></app-territory-management>
+  <div class="d-flex justify-content-end">
+    <button type="button" class="btn btn-secondary m-2" (click)="closeTerritoryManagement()">Cerrar</button>
+  </div>
 </app-modal>

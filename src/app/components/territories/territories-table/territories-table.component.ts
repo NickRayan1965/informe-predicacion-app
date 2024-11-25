@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { TerritoryService } from '../../../services/TerritoryService';
 import { CommonModule } from '@angular/common';
-import { GetTerritoriesQueryParamsDto } from '../../../model/dtos/GetTerritoriesQueryParamsDto';
+import { GetTerritoriesQueryParamsDto } from '../../../dtos/GetTerritoriesQueryParamsDto';
 import { PageableTableComponent } from "../../shared/pageable-table/pageable-table.component";
 import { TableItemConfig } from '../../../model/TableConfig';
 import { Territory } from '../../../model/Territory';

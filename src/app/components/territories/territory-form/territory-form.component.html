@@ -17,6 +17,14 @@
         <textarea class="form-control" id="description" rows="3" maxlength="250" formControlName="description">
         </textarea>
       </div>
+      <div class="mb-3 d-flex justify-content-end">
+        <button type="submit" class="btn btn-success me-2">
+          {{isEdit ? 'Editar' : 'Crear'}}
+        </button>
+        <button type="button" (click)="closeModal()" class="btn btn-secondary">
+          Cancelar
+        </button>
+      </div>
     </form>
   </div>
 </app-modal>

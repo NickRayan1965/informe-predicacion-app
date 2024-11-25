@@ -3,6 +3,7 @@ import { MainLayoutComponent } from './components/main-layout/main-layout.compon
 import { HomeComponent } from './components/home/home.component';
 import { TerritoryManagementComponent } from './components/territories/territory-management/territory-management.component';
 import { BlocksManagementComponent } from './components/blocks/blocks-management/blocks-management.component';
+import { BlockViewComponent } from './components/blocks/block-view/block-view.component';
 
 export const routes: Routes = [
   {
@@ -16,7 +17,7 @@ export const routes: Routes = [
             path: 'territorios', component: TerritoryManagementComponent,
           },
           { 
-            path: 'bloques', component: BlocksManagementComponent,
+            path: 'bloques', component: BlockViewComponent,
           },
           {
             path: '', redirectTo: '/home', pathMatch: 'full'

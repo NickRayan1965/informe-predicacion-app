@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Territory } from '../model/Territory';
 import { CreateTerritoryDto } from '../model/CreateTerritoryDto';
-import { ListResponseDto } from '../model/dtos/ListResponseDto';
-import { GetTerritoriesQueryParamsDto } from '../model/dtos/GetTerritoriesQueryParamsDto';
+import { ListResponseDto } from '../dtos/ListResponseDto';
+import { GetTerritoriesQueryParamsDto } from '../dtos/GetTerritoriesQueryParamsDto';
 import { IHttpService } from './IHttpService';
 import { Observable } from 'rxjs';
 

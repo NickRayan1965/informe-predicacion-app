@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IHttpService } from '../../../services/IHttpService';
-import { PaginationDto } from '../../../model/dtos/PaginationDto';
+import { PaginationDto } from '../../../dtos/PaginationDto';
 import { CommonModule } from '@angular/common';
-import { ListResponseDto } from '../../../model/dtos/ListResponseDto';
+import { ListResponseDto } from '../../../dtos/ListResponseDto';
 import { TableItemConfig } from '../../../model/TableConfig';
 import { Territory } from '../../../model/Territory';
 
@@ -20,6 +20,7 @@ export class PageableTableComponent implements OnInit {
   @Input({required: true}) queryParams: PaginationDto;
   @Input({required: true}) tableItemsConfig: TableItemConfig[];
   @Input() isForSelection: boolean = false;
+  @Input() tableClasses: string[] = [];
   @Output() onSelectItem = new EventEmitter<Territory>();
 
   content: ListResponseDto<any>;
@@ -49,7 +50,7 @@ export class PageableTableComponent implements OnInit {
     if (!this.content) {
       return [];
     }
-    let initial = Math.ceil(this.queryParams.page / this.maxSelectablePages);
+    let initial = this.getSection();
     initial = initial * this.maxSelectablePages - this.maxSelectablePages + 1;
     const final = initial + this.maxSelectablePages;
     const pages = [];
@@ -58,6 +59,12 @@ export class PageableTableComponent implements OnInit {
       pages.push(i);
     }
     return pages;
+  }
+  getSection(): number {
+    return Math.ceil(this.queryParams.page / this.maxSelectablePages);
+  }
+  canNextSection(): boolean {
+    return this.getSection() < Math.ceil(this.content.totalPages / this.maxSelectablePages);
   }
   nextSection(): void {
     let page = this.content.page + this.maxSelectablePages;

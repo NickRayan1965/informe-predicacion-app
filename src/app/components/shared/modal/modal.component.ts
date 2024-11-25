@@ -9,7 +9,7 @@ import { ModalService } from '../../../services/ModalService';
   styleUrls: ['./modal.component.css'], // Corregido: styleUrls para que sea reconocido
 })
 export class ModalComponent implements OnInit, AfterViewInit {
-  @Input({ required: true }) modalId!: string; // Corregido: Validación para evitar que sea nulo
+  @Input() modalId: string = 'modal'.concat(Math.random().toString()); // ID del modal
   @ViewChild('modalRef') modalElement!: ElementRef; // Usar ViewChild para capturar el modal
   @ViewChild('modalContent') modalContent!: ElementRef;
 
@@ -86,8 +86,12 @@ export class ModalComponent implements OnInit, AfterViewInit {
     const modalContent = this.modalContent.nativeElement as HTMLElement;
     this.renderer.addClass(modalContent, className);
   }
-  removeClass(className: string): void {
+  deleteShadowClasses(): void {
     const modalContent = this.modalContent.nativeElement as HTMLElement;
-    this.renderer.removeClass(modalContent, className);
+    modalContent.classList.forEach(className => {
+      if (className.startsWith('shadow-')) {
+        this.renderer.removeClass(modalContent, className);
+      }
+    });
   }
 }

@@ -33,7 +33,7 @@ export class ModalService {
   private baseZIndex = 1050;
   private topZIndex = this.baseZIndex;
   private normalDarkOpacity = 0;
-  private porcentageDarkOpacityToReduce = 0.5;
+  private porcentageDarkOpacityToReduce = 0.1;
   private firstDarkOpacity = 0.5;
 
   constructor(
@@ -88,24 +88,41 @@ export class ModalService {
   handleOpacityOnOpenModal(currentModal: ModalComponent): void {
     const currentModalState = this.modals[currentModal.modalId];
     currentModalState.darkOpacity = this.normalDarkOpacity;
+    currentModal.deleteShadowClasses();
+    currentModal.addClass('shadow-' + porcentageToInteger(0));
     Object.values(this.modals)
       .filter(m => m.modal.modalId !== currentModal.modalId)
       .forEach(m => {
-        const newDarkOpacity = m.darkOpacity >= this.firstDarkOpacity ? m.darkOpacity + (this.porcentageDarkOpacityToReduce * m.darkOpacity) : this.firstDarkOpacity;
-        m.darkOpacity = newDarkOpacity > 1 ? 1 : newDarkOpacity;
-        m.modal.
+        const newDarkOpacity = m.darkOpacity >= this.firstDarkOpacity ? 
+          m.darkOpacity + (this.porcentageDarkOpacityToReduce * m.darkOpacity) 
+          : 
+          this.firstDarkOpacity;
+        m.darkOpacity = newDarkOpacity > 1 ? 1 : newDarkOpacity; // just in case
+        m.modal.deleteShadowClasses();
+        m.modal.addClass('shadow-' + porcentageToInteger(m.darkOpacity));
       });
   }
   handleOpacityOnCloseModal(currentModal: ModalComponent): void {
     const currentModalState = this.modals[currentModal.modalId];
     currentModalState.darkOpacity = this.normalDarkOpacity;
-    currentModal.setDarkOpacity(this.normalDarkOpacity);
+    currentModal.deleteShadowClasses();
+    currentModal.addClass('shadow-' + porcentageToInteger(this.normalDarkOpacity));
     Object.values(this.modals)
       .filter(m => m.modal.modalId !== currentModal.modalId)
       .forEach(m => {
-        const newOpacity = m.darkOpacity + (this.porcentageDarkOpacityToReduce * m.darkOpacity);
-        m.darkOpacity = newOpacity > 1 ? 1 : newOpacity;
-        m.modal.setDarkOpacity(m.darkOpacity);
+        // const newOpacity = m.darkOpacity + (this.porcentageDarkOpacityToReduce * m.darkOpacity);
+        // m.darkOpacity = newOpacity > 1 ? 1 : newOpacity;
+        // m.modal.setDarkOpacity(m.darkOpacity);
+        const opacityToReduce = m.darkOpacity - (this.porcentageDarkOpacityToReduce * m.darkOpacity);
+        let opacity: number;
+        if(m.darkOpacity - opacityToReduce <= this.normalDarkOpacity) {
+          opacity = this.normalDarkOpacity;
+        } else {
+          opacity = m.darkOpacity - opacityToReduce;
+        }
+        m.darkOpacity = opacity;
+        m.modal.deleteShadowClasses();
+        m.modal.addClass('shadow-' + porcentageToInteger(opacity));
       });
   }
 }
