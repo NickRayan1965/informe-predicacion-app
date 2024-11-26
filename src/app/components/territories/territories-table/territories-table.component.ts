@@ -20,12 +20,6 @@ export class TerritoriesTableComponent implements OnInit {
 
   @Output() onSelectTerritory = new EventEmitter<Territory>();
 
-  selectTerritory(territory: Territory): void {
-    console.log({territory, isForSelection: this.isForSelection});
-    if (this.isForSelection) {
-      this.onSelectTerritory.emit(territory);
-    }
-  }
 
   maxSelectablePages = 3;
   queryParams: GetTerritoriesQueryParamsDto;
@@ -46,5 +40,10 @@ export class TerritoriesTableComponent implements OnInit {
     this.pageableTableComponent.getData();
   }
 
+  selectTerritory(territory: Territory): void {
+    if (this.isForSelection) {
+      this.onSelectTerritory.emit(territory);
+    }
+  }
 
 }

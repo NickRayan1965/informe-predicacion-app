@@ -1,4 +1,3 @@
-import { Block } from '@angular/compiler';
 import { IHttpService } from './IHttpService';
 import { Observable } from 'rxjs';
 import { ListResponseDto } from '../dtos/ListResponseDto';
@@ -6,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { GetBlocksQueryParamsDto } from '../dtos/GetBlocksQueryParamsDto';
 import { Injectable } from '@angular/core';
 import { CreateBlockDto } from '../dtos/CreateBlockDto';
+import { Block } from '../model/Block';
 
 @Injectable({
   providedIn: 'root'

@@ -39,7 +39,6 @@ export class TerritoryManagementComponent implements AfterViewInit {
   }
 
   selectTerritory(territory: Territory): void {
-    console.log({territory, isForSelection: this.isForSelection, component: 'TerritoryManagementComponent'});
     if (this.isForSelection) {
       this.onSelectTerritory.emit(territory);
     }

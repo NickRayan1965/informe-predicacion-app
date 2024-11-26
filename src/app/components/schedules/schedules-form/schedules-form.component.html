@@ -1,0 +1,29 @@
+<app-modal [modalId]="modalId">
+  <div class="modal-header">
+    <div class="container">
+      <h2 class="text-center">
+        {{isEdit ? 'Editar' : 'Crear'}} Horario
+      </h2>
+    </div>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="scheduleFormGroup" (ngSubmit)="onSubmit()">
+      <div class="form-floating mb-3">
+        <input class="form-control" placeholder="Nombre" formControlName="name" id="name" maxlength="50">
+        <label for="name">Nombre</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input class="form-control" placeholder="Hora Inicio - Hora Fin" formControlName="time" id="time" maxlength="50">
+        <label for="time">Hora Inicio - Hora Fin</label>
+      </div>
+      <div class="mb-3 d-flex justify-content-end">
+        <button type="submit" class="btn btn-success me-2">
+          {{isEdit ? 'Editar' : 'Crear'}}
+        </button>
+        <button type="button" (click)="closeModal()" class="btn btn-secondary">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</app-modal>

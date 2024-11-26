@@ -1,0 +1,13 @@
+<div>
+  <h1 class="text-center">Gestión de Horarios</h1>
+  <div class="my-2 d-flex justify-content-end">
+    <button type="button" class="btn btn-primary me-2 fw-bold" (click)="openScheduleForm()">Nuevo</button>
+    <button type="button" class="btn btn-info text-white fw-bold" (click)="getData()">
+      <span class="me-1">Buscar</span>
+      <i class="fa-solid fa-search"></i>
+    </button>
+  </div>
+  <app-schedules-tables [isForSelection]="isForSelection" (onSelectSchedule)="selectSchedule($event)">
+  </app-schedules-tables>
+  <app-schedules-form [modalId]="'createTerritoryForm'" (saveEvent)="saveScheduleEvent()"></app-schedules-form> 
+</div>

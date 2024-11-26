@@ -21,7 +21,7 @@ export class PageableTableComponent implements OnInit {
   @Input({required: true}) tableItemsConfig: TableItemConfig[];
   @Input() isForSelection: boolean = false;
   @Input() tableClasses: string[] = [];
-  @Output() onSelectItem = new EventEmitter<Territory>();
+  @Output() onSelectItem = new EventEmitter<any>();
 
   content: ListResponseDto<any>;
 
