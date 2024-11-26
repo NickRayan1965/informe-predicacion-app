@@ -4,6 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { BlockViewComponent } from './components/blocks/block-view/block-view.component';
 import { TerritoryViewComponent } from './components/territories/territory-view/territory-view.component';
 import { SchedulesViewComponent } from './components/schedules/schedules-view/schedules-view.component';
+import { ReportViewComponent } from './components/reports/report-view/report-view.component';
 
 export const routes: Routes = [
   {
@@ -11,7 +12,7 @@ export const routes: Routes = [
       component: MainLayoutComponent,
       children: [
           {
-              path: 'home', component: HomeComponent,
+              path: 'home', component: ReportViewComponent,
           },
           {
             path: 'territorios', component: TerritoryViewComponent,
@@ -21,6 +22,9 @@ export const routes: Routes = [
           },
           { 
             path: 'horarios', component: SchedulesViewComponent,
+          },
+          {
+            path: 'reportes', component: ReportViewComponent,
           },
           {
             path: '', redirectTo: '/home', pathMatch: 'full'

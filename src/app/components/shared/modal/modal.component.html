@@ -3,12 +3,12 @@
 >
   <div class="modal-dialog" style="cursor: default;">
     <div class="modal-content shadow" #modalContent>
-      <div class="modal-header" style="height: 30px; background-color: #f8f9fa;"
+      <div class="modal-header" style="height: 30px; background-color: #f8f9fa; cursor: move;"
         
       (mousedown)="startDragging($event)"
       (mouseup)="stopDragging()"
       (mousemove)="drag($event)"
-      style="cursor: move;">
+      >
       </div>
       <ng-content></ng-content>
     </div>

@@ -15,14 +15,31 @@ export class ModalComponent implements OnInit, AfterViewInit {
 
   modal!: Modal; // Instancia del modal de Bootstrap
 
-  openModalBtnId!: string; // ID del botón de apertura
-  closeModalBtnId!: string; // ID del botón de cierre
+  openModalBtnId: string; // ID del botón de apertura
+  closeModalBtnId: string; // ID del botón de cierre
 
   private isDragging = false; // Bandera para saber si se está arrastrando
   private startX = 0; // Posición inicial del ratón en X
   private startY = 0; // Posición inicial del ratón en Y
   private offsetX = 0; // Desplazamiento acumulado en X
   private offsetY = 0; // Desplazamiento acumulado en Y
+  startDragging(event: MouseEvent): void {
+    this.isDragging = true;
+    this.startX = event.clientX - this.offsetX;
+    this.startY = event.clientY - this.offsetY;
+  }
+
+  stopDragging(): void {
+    this.isDragging = false;
+  }
+
+  drag(event: MouseEvent): void {
+    if (!this.isDragging) return;
+    this.offsetX = event.clientX - this.startX;
+    this.offsetY = event.clientY - this.startY;
+    const modalContent = this.modalContent.nativeElement as HTMLElement;
+    modalContent.style.transform = `translate(${this.offsetX}px, ${this.offsetY}px)`;
+  }
 
   constructor(
     private readonly renderer: Renderer2,
@@ -56,23 +73,7 @@ export class ModalComponent implements OnInit, AfterViewInit {
   internalCloseModal(): void {
     this.modal.hide();
   }
-  startDragging(event: MouseEvent): void {
-    this.isDragging = true;
-    this.startX = event.clientX - this.offsetX;
-    this.startY = event.clientY - this.offsetY;
-  }
-
-  stopDragging(): void {
-    this.isDragging = false;
-  }
-
-  drag(event: MouseEvent): void {
-    if (!this.isDragging) return;
-    this.offsetX = event.clientX - this.startX;
-    this.offsetY = event.clientY - this.startY;
-    const modalContent = this.modalContent.nativeElement as HTMLElement;
-    modalContent.style.transform = `translate(${this.offsetX}px, ${this.offsetY}px)`;
-  }
+  
 
   setZIndex(zIndex: number): void {
     const modalElement = this.modalElement.nativeElement as HTMLElement;

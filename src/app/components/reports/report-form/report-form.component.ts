@@ -1,18 +1,21 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { ReportService } from '../../../services/ReportService';
 import { CreateReportDto } from '../../../dtos/CreateReportDto';
 import Swal from 'sweetalert2';
+import { SchedulesManagementComponent } from "../../schedules/schedules-management/schedules-management.component";
 
 @Component({
   selector: 'app-report-form',
-  imports: [ReactiveFormsModule, ModalComponent],
+  imports: [ReactiveFormsModule, ModalComponent, SchedulesManagementComponent],
   standalone: true,
   templateUrl: './report-form.component.html',
   styleUrl: './report-form.component.css'
 })
 export class ReportFormComponent implements OnInit {
+ 
+
   
   @Input({required: true}) modalId: string;
   
@@ -20,7 +23,9 @@ export class ReportFormComponent implements OnInit {
 
   @Output() saveEvent = new EventEmitter();
 
-  @ViewChild(ModalComponent) modalComponent: ModalComponent;
+  @ViewChild('main') modalComponent: ModalComponent;
+
+  @ViewChild('scheduleModal') scheduleModal: ModalComponent;
 
   reportFormGroup: FormGroup;
 
@@ -30,7 +35,14 @@ export class ReportFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.reportFormGroup = this.fb.group({});
+    this.reportFormGroup = this.fb.group({
+      date: [null],
+      scheduleId: [null],
+      scheduleName: new FormControl({value: null, disabled: true}),
+      conductorCompleteName: new FormControl({value: null, disabled: true}),
+      preachingDriverId: [null],
+      observations: [null],
+    });
   }
 
   openModal(): void {
@@ -62,10 +74,16 @@ export class ReportFormComponent implements OnInit {
           Swal.fire('Reporte creado', `Reporte para el ${report.date} - ${report.schedule.name} creado con éxito`, 'success');
         },
         error(err) {
-          Swal.fire('Error', 'Ocurrió un error al crear el territorio', 'error');
+          Swal.fire('Error', 'Ocurrió un error al crear el reporte', 'error');
         },
       });    
     }, 500);
   }
 
+  openScheduleManagement() {
+    this.scheduleModal.openModal();
+  }
+  closeScheduleManagement() {
+    this.scheduleModal.closeModal();
+  }
 }
