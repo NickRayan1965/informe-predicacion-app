@@ -53,8 +53,8 @@ export class BlocksManagementComponent implements OnInit, AfterViewInit {
     this.territoryId = territory.id;
     this.territoryName = territory.name;
     this.blocksTablesComponent.queryParams.territoryId = this.territoryId;
-    console.log('Territory selected', territory);
     this.territoriesModalComponent.closeModal();
+    this.getData();
   }
   openTerritoryManagement() {
     this.territoriesModalComponent.openModal();

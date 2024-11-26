@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ModalComponent } from "../../shared/modal/modal.component";
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BlockService } from '../../../services/BlockService';
 import { CreateBlockDto } from '../../../dtos/CreateBlockDto';
 import Swal from 'sweetalert2';
@@ -34,10 +34,10 @@ export class BlockFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.blockFormGroup = this.fb.group({
-      name: ['', [Validators.required]],
-      description: ['', [Validators.required]],
-      territoryId: [null, [Validators.required]],
-      territoryName: [{value: '', disabled: true }]
+      name: new FormControl('', [Validators.required, Validators.maxLength(50)]),
+      description: new FormControl('', [Validators.required, Validators.maxLength(250)]),
+      territoryId: new FormControl(null, [Validators.required]), 
+      territoryName: new FormControl({value: '', disabled: true})
     });
   }
 

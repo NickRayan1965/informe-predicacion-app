@@ -8,12 +8,12 @@
   </div>
   <div class="modal-body">
     <form [formGroup]="territoryFormGroup" (ngSubmit)="onSubmit()" id="territoryForm">
-      <div class="mb-3">
-        <label class="form-label" for="name">Nombre</label>
-        <input type="text" class="form-control" id="name" formControlName="name" maxlength="50">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="name" formControlName="name" maxlength="50" placeholder="Nombre">
+        <label class="floatingInput" for="name">Nombre</label>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="description">Descripción</label>
+        <label class="" for="description">Descripción</label>
         <textarea class="form-control" id="description" rows="3" maxlength="250" formControlName="description">
         </textarea>
       </div>
