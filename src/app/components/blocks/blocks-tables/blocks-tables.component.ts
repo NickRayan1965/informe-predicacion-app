@@ -1,8 +1,9 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { PageableTableComponent } from '../../shared/pageable-table/pageable-table.component';
 import { GetBlocksQueryParamsDto } from '../../../dtos/GetBlocksQueryParamsDto';
 import { TableItemConfig } from '../../../model/TableConfig';
 import { BlockService } from '../../../services/BlockService';
+import { Block } from '../../../model/Block';
 
 @Component({
   selector: 'app-blocks-tables',
@@ -14,6 +15,8 @@ import { BlockService } from '../../../services/BlockService';
 export class BlocksTablesComponent implements OnInit {
   @ViewChild(PageableTableComponent) pageableTableComponent: PageableTableComponent;
   @Input() tableClasses: string[] = [];
+  @Input() isForSelection = false;
+  @Output() onBlockSelected = new EventEmitter<Block>();
   maxSelectablePages = 3;
   queryParams: GetBlocksQueryParamsDto;
   tableItemsConfig: TableItemConfig[] = [
@@ -28,8 +31,16 @@ export class BlocksTablesComponent implements OnInit {
   ngOnInit(): void {
     this.queryParams = new GetBlocksQueryParamsDto();
   }
-  getData(): void {
-    this.pageableTableComponent.getData();
+  getData(queryParams?: Partial<GetBlocksQueryParamsDto>): void {
+    if (queryParams) {
+      this.queryParams = { ...this.queryParams, ...queryParams };
+    }
+    this.pageableTableComponent.getData(this.queryParams);
+  }
+  onBlockSelectedEvent(block: Block): void {
+    if (this.isForSelection) {
+      this.onBlockSelected.emit(block);
+    }
   }
 
 }

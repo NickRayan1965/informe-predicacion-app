@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { ReportService } from '../../../services/ReportService';
@@ -8,15 +8,16 @@ import { SchedulesManagementComponent } from "../../schedules/schedules-manageme
 import { Schedule } from '../../../model/Schedule';
 import { UsersManagementComponent } from "../../users/users-management/users-management.component";
 import { User } from '../../../model/User';
+import { ReportTerritoryItemFormComponent } from "../report-territory-item-form/report-territory-item-form.component";
 
 @Component({
   selector: 'app-report-form',
-  imports: [ReactiveFormsModule, ModalComponent, SchedulesManagementComponent, UsersManagementComponent],
+  imports: [ReactiveFormsModule, ModalComponent, SchedulesManagementComponent, UsersManagementComponent, ReportTerritoryItemFormComponent],
   standalone: true,
   templateUrl: './report-form.component.html',
   styleUrl: './report-form.component.css'
 })
-export class ReportFormComponent implements OnInit {
+export class ReportFormComponent implements OnInit, AfterViewInit {
 
  
 
@@ -31,6 +32,7 @@ export class ReportFormComponent implements OnInit {
 
   @ViewChild('scheduleModal') scheduleModal: ModalComponent;
   @ViewChild('userModal') userModal: ModalComponent;
+  @ViewChild('reportTerritoryItemForm') reportTerritoryItemForm: ReportTerritoryItemFormComponent;
 
   reportFormGroup: FormGroup;
 
@@ -38,6 +40,8 @@ export class ReportFormComponent implements OnInit {
     private readonly reportService: ReportService,
     private readonly fb: FormBuilder
   ) {}
+  ngAfterViewInit(): void {
+  }
 
   ngOnInit(): void {
     this.reportFormGroup = this.fb.group({
@@ -56,7 +60,6 @@ export class ReportFormComponent implements OnInit {
   closeModal() {
     this.modalComponent.closeModal();
   }
-
   onSubmit(): void {
     const data: CreateReportDto = this.reportFormGroup.value;
     Swal.fire({
@@ -98,6 +101,12 @@ export class ReportFormComponent implements OnInit {
     this.userModal.closeModal();
   }
 
+  openReportTerritoryItemForm() {
+    this.reportTerritoryItemForm.openModal();
+  }
+  closeReportTerritoryItemForm() {
+    this.reportTerritoryItemForm.closeModal();
+  }
 
   onScheduleSelected(schedule: Schedule) {
     this.reportFormGroup.get('scheduleId').setValue(schedule.id);

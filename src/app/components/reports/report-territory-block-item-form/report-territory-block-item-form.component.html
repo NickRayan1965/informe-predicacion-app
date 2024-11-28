@@ -1,0 +1,52 @@
+<app-modal #main>
+  <div class="modal-header">
+    <div class="container">
+      <h2 class="text-center">
+        Agregar avance de manzana
+      </h2>
+    </div>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="reportTerritoryBlockItemFormGroup" (ngSubmit)="onSubmit()">
+      <div class="d-flex align-items-center mb-3">
+        <label for="territoryIdFilter" class="me-2">
+          Manzana 
+        </label>
+        <input type="text" class="form-control me-2 text-center" id="blockName"
+          formControlName="blockName"
+        >
+        <input type="hidden" formControlName="blockId">
+        <button type = "button" class="btn btn-info" (click)="openBlockManagementModal()">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+      <div class="mb-3 form-check">
+        <input class="form-check-input" type="checkbox" id="completed" formControlName="completed">
+        <label class="form-check-label" for="completed">
+          Se predicó completamente la manzana
+        </label>
+      </div>
+      <div class="mb-3 form-floating">
+        <textarea class="form-control form-control-sm" id="observations" rows="3" maxlength="250" formControlName="observations" style="height: 150px;">
+        </textarea>
+        <label class="" for="observations">Observaciones</label>
+      </div>
+      <div class="mb-3 d-flex justify-content-end">
+        <button type="submit" class="btn btn-success me-2">
+          Agregar
+        </button>
+        <button type="button" (click)="closeModal()" class="btn btn-secondary">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</app-modal>
+<app-modal #blockManagementModal>
+  <div class="container">
+    <app-blocks-management [isForSelection]="true" (onBlockSelected)="onSelectBlock($event)" [disabledTerritorySelector]="true"></app-blocks-management>
+    <div class="d-flex justify-content-end">
+      <button type="button" class="btn btn-secondary m-2" (click)="closeBlockManagementModal()">Cerrar</button>
+    </div>
+  </div>
+</app-modal>

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { BlocksTablesComponent } from "../blocks-tables/blocks-tables.component";
 import { BlockService } from '../../../services/BlockService';
 import { ModalComponent } from "../../shared/modal/modal.component";
@@ -6,6 +6,8 @@ import { TerritoryManagementComponent } from "../../territories/territory-manage
 import { Territory } from '../../../model/Territory';
 import { FormsModule } from '@angular/forms';
 import { BlockFormComponent } from '../block-form/block-form.component';
+import { Block } from '../../../model/Block';
+import { GetBlocksQueryParamsDto } from '../../../dtos/GetBlocksQueryParamsDto';
 
 @Component({
   selector: 'app-blocks-management',
@@ -22,9 +24,17 @@ export class BlocksManagementComponent implements OnInit, AfterViewInit {
   @ViewChild('blockForm') blockFormComponent: ModalComponent;
 
   @ViewChild('territoriesModalComponent') territoriesModalComponent: ModalComponent;
+
+  @Input() isForSelection = false;
+  
+  @Input() disabledTerritorySelector = false;
+
+  @Output() onBlockSelected = new EventEmitter<Block>();
+
   
   territoryId: number;
   territoryName: string;
+
   selectTerritoryModalId = 'selectTerritoryModal';
   blockFormModalId = 'blockFormModal';
 
@@ -32,19 +42,20 @@ export class BlocksManagementComponent implements OnInit, AfterViewInit {
     private readonly blockService: BlockService
   ) {}
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
+    
+  }
 
+  ngOnInit(): void {}
+
+  setTerritory(territory: Territory): void {
+    this.territoryId = territory.id;
+    this.territoryName = territory.name;
   }
   
-  ngAfterViewInit(): void {
-    this.blocksTablesComponent.queryParams.territoryId = this.territoryId;
-    this.blocksTablesComponent.getData();
+  getData(queryParams?: Partial<GetBlocksQueryParamsDto>): void {
+    this.blocksTablesComponent.getData(queryParams);
   }
-
-  getData(): void {
-    this.blocksTablesComponent.getData();
-  }
-
 
   saveBlockEvent() {
     this.blocksTablesComponent.getData();
@@ -68,6 +79,9 @@ export class BlocksManagementComponent implements OnInit, AfterViewInit {
   
   onSaveBlock() {
     this.getData();
+  }
+  onSelectBlock(block: Block) {
+    this.onBlockSelected.emit(block);
   }
 
 }

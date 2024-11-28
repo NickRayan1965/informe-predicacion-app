@@ -16,12 +16,12 @@
         <input type="text" class="form-control me-2 text-center" id="territoryName" disabled value="3"
           [(ngModel)]="territoryName"
         >
-        <button type = "button" class="btn btn-info" (click)="openTerritoryManagement()">
+        <button type = "button" class="btn btn-info" (click)="openTerritoryManagement()" [disabled]="blockTerritorySelector">
           <i class="fa-solid fa-magnifying-glass text-white"></i>
         </button>
       </div>
     </div>
-    <app-blocks-tables></app-blocks-tables>
+    <app-blocks-tables [isForSelection]="isForSelection" (onBlockSelected)="onSelectBlock($event)"></app-blocks-tables>
   </div>
 </div>
 <app-block-form [modalId]="blockFormModalId" #blockForm (saveEvent)="onSaveBlock()"></app-block-form>

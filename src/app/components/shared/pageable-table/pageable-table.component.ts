@@ -36,8 +36,8 @@ export class PageableTableComponent implements OnInit {
     //this.getData();
   }
 
-  getData(): void {
-    console.log(this.queryParams);
+  getData(queryParams?: PaginationDto): void {
+    if (queryParams) this.queryParams = queryParams;
     this.httpService.getAll(this.queryParams).subscribe(data => {
       this.content = data;
     });
