@@ -3,7 +3,7 @@ import { IHttpService } from '../../../services/IHttpService';
 import { PaginationDto } from '../../../dtos/PaginationDto';
 import { CommonModule } from '@angular/common';
 import { ListResponseDto } from '../../../dtos/ListResponseDto';
-import { TableItemConfig } from '../../../model/TableConfig';
+import { IColumnName, TableItemConfig } from '../../../model/TableConfig';
 import { Territory } from '../../../model/Territory';
 
 @Component({
@@ -81,6 +81,20 @@ export class PageableTableComponent implements OnInit {
     }
     this.queryParams.page = page;
     this.getData();
+  }
+
+  getTextForColumnLabel(item: any, columnName: string | IColumnName[]): string {
+    if (typeof columnName === 'string') {
+      return item[columnName]?.toString() ?? '';
+    }
+    let text = '';
+    columnName.forEach((column, index) => {
+      text += item[column.columnName]?.toString() ?? '';
+      if (index < columnName.length - 1) {
+        text += ' ';
+      }
+    });
+    return text;
   }
 
 }

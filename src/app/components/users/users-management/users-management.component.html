@@ -1,0 +1,13 @@
+<div class="container">
+  <h1 class="text-center">
+    Gestión de Usuarios
+  </h1>
+  <div class="my-2 d-flex justify-content-end">
+    <button type="button" class="btn btn-info text-white fw-bold" (click)="getData()">
+      <span class="me-1">Buscar</span>
+      <i class="fa-solid fa-search"></i>
+    </button>
+  </div>
+  <app-users-table [isForSelection]="isForSelection" (onSelectUser)="selectUser($event)">
+  </app-users-table>
+</div>

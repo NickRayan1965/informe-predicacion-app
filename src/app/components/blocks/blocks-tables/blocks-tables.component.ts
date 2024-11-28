@@ -18,9 +18,9 @@ export class BlocksTablesComponent implements OnInit {
   queryParams: GetBlocksQueryParamsDto;
   tableItemsConfig: TableItemConfig[] = [
     //{ columnLabel: 'Id', columnName: 'id' },
-    { columnLabel: 'Nombre', columnName: 'name' },
-    { columnLabel: 'Descripción', columnName: 'description' },
-    { columnLabel: 'Territorio', columnName: 'territoryName' }
+    { columnLabel: 'Nombre', valueReference: 'name' },
+    { columnLabel: 'Descripción', valueReference: 'description' },
+    { columnLabel: 'Territorio', valueReference: 'territoryName' }
   ];
   constructor(
     public readonly blockService: BlockService,

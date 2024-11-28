@@ -25,8 +25,8 @@ export class SchedulesTablesComponent implements OnInit {
   maxSelectablePages = 3;
   queryParams: GetSchedulesQueryParamsDto;
   tableItemsConfig: TableItemConfig[] = [
-    { columnLabel: 'Nombre', columnName: 'name' },
-    { columnLabel: 'Hora', columnName: 'time' }
+    { columnLabel: 'Nombre', valueReference: 'name' },
+    { columnLabel: 'Hora', valueReference: 'time' }
   ];
 
   constructor(

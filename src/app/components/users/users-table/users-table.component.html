@@ -1,0 +1,4 @@
+<app-pageable-table [httpService]="userService" [maxSelectablePages]="maxSelectablePages"  [queryParams]="queryParams" [tableItemsConfig]="tableItemsConfig"
+(onSelectItem)="selectUser($event)"
+[isForSelection]="isForSelection"
+></app-pageable-table>

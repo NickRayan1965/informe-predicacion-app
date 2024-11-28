@@ -5,15 +5,19 @@ import { ReportService } from '../../../services/ReportService';
 import { CreateReportDto } from '../../../dtos/CreateReportDto';
 import Swal from 'sweetalert2';
 import { SchedulesManagementComponent } from "../../schedules/schedules-management/schedules-management.component";
+import { Schedule } from '../../../model/Schedule';
+import { UsersManagementComponent } from "../../users/users-management/users-management.component";
+import { User } from '../../../model/User';
 
 @Component({
   selector: 'app-report-form',
-  imports: [ReactiveFormsModule, ModalComponent, SchedulesManagementComponent],
+  imports: [ReactiveFormsModule, ModalComponent, SchedulesManagementComponent, UsersManagementComponent],
   standalone: true,
   templateUrl: './report-form.component.html',
   styleUrl: './report-form.component.css'
 })
 export class ReportFormComponent implements OnInit {
+
  
 
   
@@ -26,6 +30,7 @@ export class ReportFormComponent implements OnInit {
   @ViewChild('main') modalComponent: ModalComponent;
 
   @ViewChild('scheduleModal') scheduleModal: ModalComponent;
+  @ViewChild('userModal') userModal: ModalComponent;
 
   reportFormGroup: FormGroup;
 
@@ -86,4 +91,22 @@ export class ReportFormComponent implements OnInit {
   closeScheduleManagement() {
     this.scheduleModal.closeModal();
   }
+  openUserManagement() {
+    this.userModal.openModal();
+  }
+  closeUserManagement() {
+    this.userModal.closeModal();
+  }
+
+
+  onScheduleSelected(schedule: Schedule) {
+    this.reportFormGroup.get('scheduleId').setValue(schedule.id);
+    this.reportFormGroup.get('scheduleName').setValue(schedule.name + ' / ' + schedule.time);
+    this.scheduleModal.closeModal();
+  }
+  onUserSelected(user: User) {
+    this.reportFormGroup.get('preachingDriverId').setValue(user.id);
+    this.reportFormGroup.get('conductorCompleteName').setValue(`${user.names} ${user.lastNames}`);
+    this.userModal.closeModal();
+  } 
 }

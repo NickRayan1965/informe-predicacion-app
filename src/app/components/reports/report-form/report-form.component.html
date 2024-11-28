@@ -30,9 +30,49 @@
         <input type="text" class="form-control me-2 text-center form-control-sm" id="conductorCompleteName"
           formControlName="conductorCompleteName"
         >
-        <button type = "button" class="btn btn-info" (click)="closeModal()" id="conductorFilter">
+        <button type = "button" class="btn btn-info" (click)="openUserManagement()" id="conductorFilter">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
+      </div>
+      <div class="mb-3 border  rounded p-2">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="">
+            <span class="fw-bold" style="font-size: 1.2rem;">
+              Avances
+            </span>
+          </div>
+          <div class="">
+            <button class="btn btn-primary" type="button">
+              Agregar
+            </button>
+          </div>
+        </div>
+        <div data-bs-theme="dark">
+          <table class="table table-striped border border-2">
+            <thead>
+              <tr>
+                <th>Territorio</th>
+                <th>Manzanas</th>
+                <th>Tipo de Avance</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>2, 3, 4</td>
+                <td>Completo</td>
+                <td>
+                  <button class="btn btn-primary me-2" type="button">
+                    <i class="fa-solid fa-pencil"></i>
+                  </button>
+                  <button class="btn btn-danger" type="button">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+          </table>
+        </div>
       </div>
       <div class="mb-3 form-floating">
         <textarea class="form-control form-control-sm" id="observations" rows="3" maxlength="250" formControlName="observations" style="height: 150px;">
@@ -53,8 +93,15 @@
   
 </app-modal>
 <app-modal #scheduleModal>
-  <app-schedules-management [isForSelection]="true" ></app-schedules-management>
+  <app-schedules-management [isForSelection]="true" (onSelectSchedule)="onScheduleSelected($event)"></app-schedules-management>
   <div class="d-flex justify-content-end">
     <button type="button" class="btn btn-secondary m-2" (click)="closeScheduleManagement()">Cerrar</button>
+  </div>
+</app-modal>
+
+<app-modal #userModal>
+  <app-users-management [isForSelection]="true" (onSelectUser)="onUserSelected($event)"></app-users-management>
+  <div class="d-flex justify-content-end">
+    <button type="button" class="btn btn-secondary m-2" (click)="closeUserManagement()">Cerrar</button>
   </div>
 </app-modal>

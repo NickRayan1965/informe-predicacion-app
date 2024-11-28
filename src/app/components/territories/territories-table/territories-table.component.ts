@@ -25,8 +25,8 @@ export class TerritoriesTableComponent implements OnInit {
   queryParams: GetTerritoriesQueryParamsDto;
   tableItemsConfig: TableItemConfig[] = [
     //{ columnLabel: 'Id', columnName: 'id' },
-    { columnLabel: 'Número', columnName: 'name' },
-    { columnLabel: 'Descripción', columnName: 'description' },
+    { columnLabel: 'Número', valueReference: 'name' },
+    { columnLabel: 'Descripción', valueReference: 'description' },
   ];
 
   constructor(
