@@ -47,21 +47,27 @@
             </button>
           </div>
         </div>
-        <div data-bs-theme="dark">
+        <div data-bs-theme="dark" *ngIf="reportTerritoryItems.length">
           <table class="table table-striped border border-2">
             <thead>
               <tr>
                 <th>Territorio</th>
                 <th>Manzanas</th>
-                <th>Tipo de Avance</th>
+                <th>Avance</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>2, 3, 4</td>
-                <td>Completo</td>
+              <tr *ngFor="let reportTerritoryItem of reportTerritoryItems">
+                <td>
+                  {{ reportTerritoryItem.territory.name }}
+                </td>
+                <td>
+                {{ getBlocksJoined(reportTerritoryItem.blocks) }}
+                </td>
+                <td>
+                  {{reportTerritoryItem.completed ? 'Completo': 'Parcial'}}
+                </td>
                 <td>
                   <button class="btn btn-primary me-2" type="button">
                     <i class="fa-solid fa-pencil"></i>
@@ -105,4 +111,4 @@
     <button type="button" class="btn btn-secondary m-2" (click)="closeUserManagement()">Cerrar</button>
   </div>
 </app-modal>
-<app-report-territory-item-form #reportTerritoryItemForm></app-report-territory-item-form>
+<app-report-territory-item-form #reportTerritoryItemForm (onAdd)="onAddReportTerritoryItem($event)"></app-report-territory-item-form>

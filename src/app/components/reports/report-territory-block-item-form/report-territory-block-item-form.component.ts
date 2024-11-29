@@ -8,6 +8,7 @@ import { CreateTerritoryBlockItemDto } from '../../../dtos/CreateReportTerritory
 import Swal from 'sweetalert2';
 import { ReportTerritoryBlockItem } from '../../../model/ReportTerritoryBlockItem';
 import { Territory } from '../../../model/Territory';
+import { ListResponseDto } from '../../../dtos/ListResponseDto';
 
 @Component({
   selector: 'app-report-territory-block-item-form',
@@ -32,7 +33,7 @@ export class ReportTerritoryBlockItemFormComponent {
     private formBuilder: FormBuilder
   ) {
     this.reportTerritoryBlockItemFormGroup = this.formBuilder.group({
-      blockId: new FormControl(null, [Validators.required]),
+      blockId: new FormControl({value: '', disabled: false}, [Validators.required]),
       blockName: new FormControl({value: '', disabled: true}),
       observations: new FormControl('', [Validators.maxLength(250)]),
       completed: new FormControl(false)
@@ -62,14 +63,13 @@ export class ReportTerritoryBlockItemFormComponent {
   onSelectBlock(block: Block) {
     this.reportTerritoryBlockItemFormGroup.get('blockId').setValue(block.id);
     this.reportTerritoryBlockItemFormGroup.get('blockName').setValue(block.name);
-
     this.closeBlockManagementModal();
   }
   onSubmit() {
     if (!this.reportTerritoryBlockItemFormGroup.valid) {
       Swal.fire('Error', 'Formulario inválido', 'error');
     }
-    const dto = this.reportTerritoryBlockItemFormGroup.value;
+    const dto = this.reportTerritoryBlockItemFormGroup.getRawValue();
     const entity: ReportTerritoryBlockItem = {
       id: null,
       blockId: dto.blockId,
@@ -81,5 +81,10 @@ export class ReportTerritoryBlockItemFormComponent {
     this.reportTerritoryBlockItemFormGroup.reset();
     this.onAdd.emit(entity);
   }
-    
+  setBlockIdsToExclude(ids: number[]) {
+    this.blockManagementComponent.setIdsToExclude(ids);
+  }
+  getBlocksRawResponse(): ListResponseDto<Block> {
+    return this.blockManagementComponent.getRawResponse();
+  }
 }

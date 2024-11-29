@@ -4,6 +4,7 @@ import { GetBlocksQueryParamsDto } from '../../../dtos/GetBlocksQueryParamsDto';
 import { TableItemConfig } from '../../../model/TableConfig';
 import { BlockService } from '../../../services/BlockService';
 import { Block } from '../../../model/Block';
+import { ListResponseDto } from '../../../dtos/ListResponseDto';
 
 @Component({
   selector: 'app-blocks-tables',
@@ -17,6 +18,7 @@ export class BlocksTablesComponent implements OnInit {
   @Input() tableClasses: string[] = [];
   @Input() isForSelection = false;
   @Output() onBlockSelected = new EventEmitter<Block>();
+  
   maxSelectablePages = 3;
   queryParams: GetBlocksQueryParamsDto;
   tableItemsConfig: TableItemConfig[] = [
@@ -28,6 +30,8 @@ export class BlocksTablesComponent implements OnInit {
   constructor(
     public readonly blockService: BlockService,
   ) {}
+
+
   ngOnInit(): void {
     this.queryParams = new GetBlocksQueryParamsDto();
   }
@@ -41,6 +45,12 @@ export class BlocksTablesComponent implements OnInit {
     if (this.isForSelection) {
       this.onBlockSelected.emit(block);
     }
+  }
+  setIdsToExclude(ids: number[]): void {
+    this.pageableTableComponent.setIdsToExclude(ids);
+  }
+  getRawResponse(): ListResponseDto<Block> {
+    return this.pageableTableComponent.getRawResponse<Block>();
   }
 
 }

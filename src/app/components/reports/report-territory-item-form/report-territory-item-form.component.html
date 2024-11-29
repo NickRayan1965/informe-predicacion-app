@@ -7,7 +7,7 @@
     </div>
   </div>
   <div class="modal-body">
-    <form [formGroup]="reportTerritoryItemFormGroup" >
+    <form [formGroup]="reportTerritoryItemFormGroup" (ngSubmit)="onSubmit()">
       <div class="d-flex align-items-center mb-3">
         <label for="territoryIdFilter" class="me-2">
           Territorio 
@@ -29,16 +29,17 @@
             </span>
           </div>
           <div>
-            <button class="btn btn-primary" (click)="openReportTerritoryBlockItemForm()" type="button">
+            <button class="btn btn-primary" (click)="openReportTerritoryBlockItemForm()" type="button" [disabled]="!canAddReportTerritoryBlockItem()">
               Agregar
             </button>
           </div>
         </div>
-        <div data-bs-theme="dark">
+        <div data-bs-theme="dark" *ngIf="reportTerritoryBlockItems.length">
           <table class="table table-striped border border-2">
             <thead>
               <tr>
                 <th>Manzana</th>
+                <th>Avance</th>
                 <th class="text-center">
                   Acciones
                 </th>
@@ -49,10 +50,14 @@
                 <td>
                   {{ reportTerritoryBlockItem.blockName }}
                 </td>
+                <td>
+                  {{reportTerritoryBlockItem.completed ? 'Completo': 'Parcial'}}
+                </td>
+
                 <td class="text-center">
-                  <button class="btn btn-primary me-2">
+                  <!-- <button class="btn btn-primary me-2">
                     <i class="fa-solid fa-pencil"></i>
-                  </button>
+                  </button> -->
                   <button class="btn btn-danger">
                     <i class="fa-solid fa-trash"></i>
                   </button>

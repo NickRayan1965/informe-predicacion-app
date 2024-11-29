@@ -9,10 +9,13 @@ import { Schedule } from '../../../model/Schedule';
 import { UsersManagementComponent } from "../../users/users-management/users-management.component";
 import { User } from '../../../model/User';
 import { ReportTerritoryItemFormComponent } from "../report-territory-item-form/report-territory-item-form.component";
+import { ReportTerritoryItem } from '../../../model/ReportTerritoryItem';
+import { CommonModule } from '@angular/common';
+import { ReportTerritoryBlockItem } from '../../../model/ReportTerritoryBlockItem';
 
 @Component({
   selector: 'app-report-form',
-  imports: [ReactiveFormsModule, ModalComponent, SchedulesManagementComponent, UsersManagementComponent, ReportTerritoryItemFormComponent],
+  imports: [ReactiveFormsModule, ModalComponent, SchedulesManagementComponent, UsersManagementComponent, ReportTerritoryItemFormComponent, CommonModule],
   standalone: true,
   templateUrl: './report-form.component.html',
   styleUrl: './report-form.component.css'
@@ -33,6 +36,8 @@ export class ReportFormComponent implements OnInit, AfterViewInit {
   @ViewChild('scheduleModal') scheduleModal: ModalComponent;
   @ViewChild('userModal') userModal: ModalComponent;
   @ViewChild('reportTerritoryItemForm') reportTerritoryItemForm: ReportTerritoryItemFormComponent;
+
+  reportTerritoryItems: ReportTerritoryItem[] = [];
 
   reportFormGroup: FormGroup;
 
@@ -117,5 +122,12 @@ export class ReportFormComponent implements OnInit, AfterViewInit {
     this.reportFormGroup.get('preachingDriverId').setValue(user.id);
     this.reportFormGroup.get('conductorCompleteName').setValue(`${user.names} ${user.lastNames}`);
     this.userModal.closeModal();
-  } 
+  }
+  onAddReportTerritoryItem(reportTerritoryItem: ReportTerritoryItem) {
+    console.log({reportTerritoryItem});
+    this.reportTerritoryItems.push(reportTerritoryItem);
+  }
+  getBlocksJoined(reportTerritoryBlockItems: ReportTerritoryBlockItem[]): string {
+    return reportTerritoryBlockItems.map(item => item.blockName).join(', ');
+  }
 }

@@ -19,8 +19,13 @@ export class PageableTableComponent implements OnInit {
   @Input({required: true}) maxSelectablePages: number;
   @Input({required: true}) queryParams: PaginationDto;
   @Input({required: true}) tableItemsConfig: TableItemConfig[];
+  
   @Input() isForSelection: boolean = false;
+  
   @Input() tableClasses: string[] = [];
+  @Input() idsToExclude: number[] = [];
+  @Input() idColumnName: string = 'id';
+
   @Output() onSelectItem = new EventEmitter<any>();
 
   content: ListResponseDto<any>;
@@ -41,6 +46,9 @@ export class PageableTableComponent implements OnInit {
     this.httpService.getAll(this.queryParams).subscribe(data => {
       this.content = data;
     });
+  }
+  getRawResponse<T>(): ListResponseDto<T> {
+    return this.content;
   }
   changePage(page: number): void {
     this.queryParams.page = page;
@@ -97,4 +105,11 @@ export class PageableTableComponent implements OnInit {
     return text;
   }
 
+  setIdsToExclude(ids: number[]): void {
+    this.idsToExclude = ids;
+  }
+
+  getDataToDisplay(): any[] {   
+    return this.content.data.filter(item => !this.idsToExclude.includes(item[this.idColumnName]));
+  }
 }

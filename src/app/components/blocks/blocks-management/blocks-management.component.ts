@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { BlockFormComponent } from '../block-form/block-form.component';
 import { Block } from '../../../model/Block';
 import { GetBlocksQueryParamsDto } from '../../../dtos/GetBlocksQueryParamsDto';
+import { ListResponseDto } from '../../../dtos/ListResponseDto';
 
 @Component({
   selector: 'app-blocks-management',
@@ -82,6 +83,13 @@ export class BlocksManagementComponent implements OnInit, AfterViewInit {
   }
   onSelectBlock(block: Block) {
     this.onBlockSelected.emit(block);
+  }
+
+  setIdsToExclude(ids: number[]): void {
+    this.blocksTablesComponent.setIdsToExclude(ids);
+  }
+  getRawResponse(): ListResponseDto<Block> {
+    return this.blocksTablesComponent.getRawResponse();
   }
 
 }

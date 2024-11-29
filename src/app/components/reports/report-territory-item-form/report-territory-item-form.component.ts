@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { ModalComponent } from "../../shared/modal/modal.component";
 import { ReportTerritoryBlockItemFormComponent } from "../report-territory-block-item-form/report-territory-block-item-form.component";
 import { CreateReportTerritoryItemDto } from '../../../dtos/CreateReportTerritoryItemDto';
@@ -9,6 +9,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import Swal from 'sweetalert2';
 import { TerritoryManagementComponent } from "../../territories/territory-management/territory-management.component";
 import { Territory } from '../../../model/Territory';
+import { ReportTerritoryItem } from '../../../model/ReportTerritoryItem';
 
 @Component({
   selector: 'app-report-territory-item-form',
@@ -27,6 +28,8 @@ export class ReportTerritoryItemFormComponent implements AfterViewInit {
 
   @ViewChild('reportTerritoryBlockItemForm') reportTerritoryBlockItemForm: ReportTerritoryBlockItemFormComponent;
 
+  @Output() onAdd = new EventEmitter<ReportTerritoryItem>();
+
   reportTerritoryItemFormGroup: FormGroup;
 
   reportTerritoryBlockItems: ReportTerritoryBlockItem[] = [];
@@ -36,9 +39,8 @@ export class ReportTerritoryItemFormComponent implements AfterViewInit {
   ) {
     this.reportTerritoryItemFormGroup = this.formBuilder.group({
       territoryId: new FormControl({value: '', disabled: true}, [Validators.required]),
-      territoryName: new FormControl('', [Validators.required]),
+      territoryName: new FormControl({value: '', disabled: true }),
       observations: new FormControl('', [Validators.maxLength(250)]),
-      completed: new FormControl(false)
     });
   }
   ngAfterViewInit(): void {
@@ -62,6 +64,7 @@ export class ReportTerritoryItemFormComponent implements AfterViewInit {
   }
   onAddReportTerritoryBlockItem(reportTerritoryBlockItem: ReportTerritoryBlockItem): void {
     this.reportTerritoryBlockItems.push(reportTerritoryBlockItem);
+    this.reportTerritoryBlockItemForm.setBlockIdsToExclude(this.reportTerritoryBlockItems.map(item => item.blockId));
     this.closeReportTerritoryBlockItemForm();
   }
   openTerritoryManagementModal(): void {
@@ -76,5 +79,29 @@ export class ReportTerritoryItemFormComponent implements AfterViewInit {
     this.reportTerritoryItemFormGroup.get('territoryName').setValue(territory.name);
     this.reportTerritoryBlockItemForm.setTerritory(territory);
     this.closeTerritoryManagementModal();
+  }
+  canAddReportTerritoryBlockItem(): boolean {
+    const territoryId = this.reportTerritoryItemFormGroup.get('territoryId').value;
+    console.log({territoryId});
+    return territoryId !== '';
+  }
+  onSubmit(): void {
+    const data = this.reportTerritoryItemFormGroup.getRawValue();
+    const numberOfBlocks = this.reportTerritoryBlockItemForm.getBlocksRawResponse().totalElements;
+    
+    const entity: ReportTerritoryItem = {
+      completed: this.reportTerritoryBlockItems.every(item => item.completed) && numberOfBlocks === this.reportTerritoryBlockItems.length,
+      observations: data.observations,
+      territory: {
+        id: data.territoryId,
+        name: data.territoryName
+      },
+      blocks: this.reportTerritoryBlockItems
+    };
+    this.onAdd.emit(entity);
+    this.reportTerritoryBlockItems = [];
+    this.reportTerritoryItemFormGroup.reset();
+    this.reportTerritoryBlockItemForm.setTerritory(null);
+    this.closeModal();
   }
 }
