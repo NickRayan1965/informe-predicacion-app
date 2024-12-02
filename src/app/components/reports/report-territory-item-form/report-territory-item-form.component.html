@@ -1,35 +1,28 @@
 <app-modal #main>
   <div class="modal-header">
     <div class="container">
-      <h2 class="text-center">
-        Agregar avance de territorio
-      </h2>
+      <h2 class="text-center">Agregar avance de territorio</h2>
     </div>
   </div>
   <div class="modal-body">
     <form [formGroup]="reportTerritoryItemFormGroup" (ngSubmit)="onSubmit()">
       <div class="d-flex align-items-center mb-3">
-        <label for="territoryIdFilter" class="me-2">
-          Territorio 
-        </label>
-        <input type="text" class="form-control me-2 text-center" id="territoryName"
-          formControlName="territoryName"
-        >
-        <input type="hidden" formControlName="territoryId">
-        <button type = "button" class="btn btn-info" (click)="openTerritoryManagementModal()">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
+        <label for="territoryIdFilter" class="me-2"> Territorio </label>
+        <app-territories-select />
       </div>
-      
+
       <div class="mb-3 border rounded p-2">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <div>
-            <span class="fw-bold" style="font-size: 1.2rem;">
-              Manzanas
-            </span>
+            <span class="fw-bold" style="font-size: 1.2rem"> Manzanas </span>
           </div>
           <div>
-            <button class="btn btn-primary" (click)="openReportTerritoryBlockItemForm()" type="button" [disabled]="!canAddReportTerritoryBlockItem()">
+            <button
+              class="btn btn-primary"
+              (click)="openReportTerritoryBlockItemForm()"
+              type="button"
+              [disabled]="disabledAddBlock$ | async"
+            >
               Agregar
             </button>
           </div>
@@ -40,18 +33,22 @@
               <tr>
                 <th>Manzana</th>
                 <th>Avance</th>
-                <th class="text-center">
-                  Acciones
-                </th>
+                <th class="text-center">Acciones</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let reportTerritoryBlockItem of reportTerritoryBlockItems">
+              <tr
+                *ngFor="
+                  let reportTerritoryBlockItem of reportTerritoryBlockItems
+                "
+              >
                 <td>
                   {{ reportTerritoryBlockItem.blockName }}
                 </td>
                 <td>
-                  {{reportTerritoryBlockItem.completed ? 'Completo': 'Parcial'}}
+                  {{
+                    reportTerritoryBlockItem.completed ? "Completo" : "Parcial"
+                  }}
                 </td>
 
                 <td class="text-center">
@@ -68,14 +65,19 @@
         </div>
       </div>
       <div class="mb-3 form-floating">
-        <textarea class="form-control form-control-sm" id="observations" rows="3" maxlength="250" formControlName="observations" style="height: 150px;">
+        <textarea
+          class="form-control form-control-sm"
+          id="observations"
+          rows="3"
+          maxlength="250"
+          formControlName="observations"
+          style="height: 150px"
+        >
         </textarea>
         <label class="" for="observations">Observaciones</label>
       </div>
       <div class="mb-3 d-flex justify-content-end">
-        <button type="submit" class="btn btn-success me-2">
-          Agregar
-        </button>
+        <button type="submit" class="btn btn-success me-2">Agregar</button>
         <button type="button" (click)="closeModal()" class="btn btn-secondary">
           Cancelar
         </button>
@@ -85,15 +87,7 @@
 </app-modal>
 
 <app-report-territory-block-item-form
-(onAdd)="onAddReportTerritoryBlockItem($event)"
-#reportTerritoryBlockItemForm
+  (onAdd)="onAddReportTerritoryBlockItem($event)"
+  #reportTerritoryBlockItemForm
 >
 </app-report-territory-block-item-form>
-<app-modal #territoryManagementModal>
-  <div class="container">
-    <app-territory-management [isForSelection]="true" (onSelectTerritory)="onSelectTerritory($event)"></app-territory-management>
-    <div class="d-flex justify-content-end">
-      <button type="button" class="btn btn-secondary m-2" (click)="closeTerritoryManagementModal()">Cerrar</button>
-    </div>
-  </div>
-</app-modal>

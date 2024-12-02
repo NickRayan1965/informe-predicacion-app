@@ -1,8 +1,16 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { BlocksTablesComponent } from "../blocks-tables/blocks-tables.component";
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { BlocksTablesComponent } from '../blocks-tables/blocks-tables.component';
 import { BlockService } from '../../../services/BlockService';
-import { ModalComponent } from "../../shared/modal/modal.component";
-import { TerritoryManagementComponent } from "../../territories/territory-management/territory-management.component";
+import { ModalComponent } from '../../shared/modal/modal.component';
+import { TerritoryManagementComponent } from '../../territories/territory-management/territory-management.component';
 import { Territory } from '../../../model/Territory';
 import { FormsModule } from '@angular/forms';
 import { BlockFormComponent } from '../block-form/block-form.component';
@@ -12,48 +20,57 @@ import { ListResponseDto } from '../../../dtos/ListResponseDto';
 
 @Component({
   selector: 'app-blocks-management',
-  imports: [BlocksTablesComponent, ModalComponent, TerritoryManagementComponent, FormsModule, BlockFormComponent],
+  imports: [
+    BlocksTablesComponent,
+    ModalComponent,
+    TerritoryManagementComponent,
+    FormsModule,
+    BlockFormComponent,
+  ],
   standalone: true,
   templateUrl: './blocks-management.component.html',
-  styleUrl: './blocks-management.component.css'
+  styleUrl: './blocks-management.component.css',
 })
 export class BlocksManagementComponent implements OnInit, AfterViewInit {
-
-
-  @ViewChild(BlocksTablesComponent) blocksTablesComponent: BlocksTablesComponent;
+  @ViewChild(BlocksTablesComponent)
+  blocksTablesComponent: BlocksTablesComponent;
 
   @ViewChild('blockForm') blockFormComponent: ModalComponent;
 
-  @ViewChild('territoriesModalComponent') territoriesModalComponent: ModalComponent;
+  @ViewChild('territoriesModalComponent')
+  
+  territoriesModalComponent: ModalComponent;
 
   @Input() isForSelection = false;
-  
+
   @Input() disabledTerritorySelector = false;
 
   @Output() onBlockSelected = new EventEmitter<Block>();
 
-  
   territoryId: number;
   territoryName: string;
 
   selectTerritoryModalId = 'selectTerritoryModal';
   blockFormModalId = 'blockFormModal';
 
-  constructor(
-    private readonly blockService: BlockService
-  ) {}
+  constructor(private readonly blockService: BlockService) {}
 
-  ngAfterViewInit(): void {
-    
+  ngAfterViewInit(): void {}
+
+  ngOnInit(): void {
+    this.blockService.loadAllData$({ pageSize: 2 }).subscribe({
+      next: (response) => {
+      },
+      complete: () => {
+      }
+    });
   }
-
-  ngOnInit(): void {}
 
   setTerritory(territory: Territory): void {
     this.territoryId = territory.id;
     this.territoryName = territory.name;
   }
-  
+
   getData(queryParams?: Partial<GetBlocksQueryParamsDto>): void {
     this.blocksTablesComponent.getData(queryParams);
   }
@@ -77,7 +94,7 @@ export class BlocksManagementComponent implements OnInit, AfterViewInit {
   openBlockForm() {
     this.blockFormComponent.openModal();
   }
-  
+
   onSaveBlock() {
     this.getData();
   }
@@ -91,5 +108,4 @@ export class BlocksManagementComponent implements OnInit, AfterViewInit {
   getRawResponse(): ListResponseDto<Block> {
     return this.blocksTablesComponent.getRawResponse();
   }
-
 }

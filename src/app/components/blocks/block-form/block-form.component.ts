@@ -49,7 +49,6 @@ export class BlockFormComponent implements OnInit {
   }
 
   setTerritory(territory: Territory): void {
-    console.log('Territory selected', territory);
     this.blockFormGroup.get('territoryId').setValue(territory.id);
     this.blockFormGroup.get('territoryName').setValue(territory.name);
     this.closeTerritoryManagement();

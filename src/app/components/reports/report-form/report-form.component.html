@@ -12,27 +12,19 @@
         <input type="date" class="form-control form-control-sm" placeholder="Fecha" formControlName="date" id="date">
         <label for="date">Fecha</label>
       </div>
-      <div class="d-flex align-items-center mb-3">
-        <label for="scheduleFilter" class="me-2 col-3 col-md-2">
-          Horario 
-        </label>
-        <input type="text" class="form-control me-2 text-center form-control-sm" id="scheduleName"
-          formControlName="scheduleName"
-        >
-        <button type = "button" class="btn btn-info" (click)="openScheduleManagement()" id="scheduleFilter">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-      </div>
-      <div class="d-flex align-items-center mb-3">
-        <label for="conductorFilter" class="me-2 col-3 col-md-2">
-          Conductor 
-        </label>
-        <input type="text" class="form-control me-2 text-center form-control-sm" id="conductorCompleteName"
-          formControlName="conductorCompleteName"
-        >
-        <button type = "button" class="btn btn-info" (click)="openUserManagement()" id="conductorFilter">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
+      <div class="d-flex align-items-center mb-3 col-12">
+        <div class="col-6">
+          <label for="scheduleFilter" class="col-12 mb-1">
+            Horario 
+          </label>
+          <app-schedule-select class="col-12"/>
+        </div>
+        <div class="col-6 ms-2">
+          <label for="conductorFilter" class="col-12 mb-1">
+            Conductor 
+          </label>
+          <app-users-select class="col-12"/>
+        </div>
       </div>
       <div class="mb-3 border  rounded p-2">
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -98,17 +90,5 @@
   </div>
   
 </app-modal>
-<app-modal #scheduleModal>
-  <app-schedules-management [isForSelection]="true" (onSelectSchedule)="onScheduleSelected($event)"></app-schedules-management>
-  <div class="d-flex justify-content-end">
-    <button type="button" class="btn btn-secondary m-2" (click)="closeScheduleManagement()">Cerrar</button>
-  </div>
-</app-modal>
 
-<app-modal #userModal>
-  <app-users-management [isForSelection]="true" (onSelectUser)="onUserSelected($event)"></app-users-management>
-  <div class="d-flex justify-content-end">
-    <button type="button" class="btn btn-secondary m-2" (click)="closeUserManagement()">Cerrar</button>
-  </div>
-</app-modal>
 <app-report-territory-item-form #reportTerritoryItemForm (onAdd)="onAddReportTerritoryItem($event)"></app-report-territory-item-form>

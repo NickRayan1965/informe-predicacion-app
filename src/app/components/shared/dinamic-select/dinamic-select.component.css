@@ -1,0 +1,28 @@
+.line-loader {
+  width: 100px; /* Ancho del contenedor */
+  height: 1px;  /* Grosor de la línea */
+  background-color: #e0e0e0; /* Fondo gris */
+  overflow: hidden;
+  position: relative;
+}
+
+.line-loader::after {
+  content: "";
+  position: absolute;
+  width: 30%; /* Ancho de la línea animada */
+  height: 100%;
+  background-color: #007bff; /* Color de la línea animada */
+  animation: slide 1s infinite;
+}
+
+@keyframes slide {
+  0% {
+    left: -30%; /* Empieza fuera del contenedor */
+  }
+  50% {
+    left: 50%; /* Cruza el medio */
+  }
+  100% {
+    left: 100%; /* Sale del contenedor */
+  }
+}

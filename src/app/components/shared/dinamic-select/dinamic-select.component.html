@@ -1,0 +1,11 @@
+<div>
+  <div *ngIf="!isAllDataLoaded"class="line-loader" style="width: 100%;"></div>
+  <select [(ngModel)]="selectedValue" class="form-control" (change)="onChange($event)" [disabled]="disabled">
+    <option [value]="defaultValue">
+      {{defaultLabel}}
+    </option>
+    <option *ngFor="let item of getData()" [value]="item[valueField]">
+      {{getLabel(item)}}
+    </option>
+  </select>
+</div>

@@ -31,7 +31,6 @@ export class PageableTableComponent implements OnInit {
   content: ListResponseDto<any>;
 
   selectItem(item: Territory): void {
-    console.log({item, isForSelection: this.isForSelection});
     if (this.isForSelection) {
       this.onSelectItem.emit(item);
     }
@@ -43,7 +42,7 @@ export class PageableTableComponent implements OnInit {
 
   getData(queryParams?: PaginationDto): void {
     if (queryParams) this.queryParams = queryParams;
-    this.httpService.getAll(this.queryParams).subscribe(data => {
+    this.httpService.getAllPaginated(this.queryParams).subscribe(data => {
       this.content = data;
     });
   }

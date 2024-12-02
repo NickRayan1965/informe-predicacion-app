@@ -30,7 +30,6 @@ export class TerritoryManagementComponent implements AfterViewInit {
   }
 
   saveTerritoryEvent() {
-    console.log('Territory saved');
     this.territoriesTableComponent.getData();
   }
 

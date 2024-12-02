@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { ReportService } from '../../../services/ReportService';
 import { CreateReportDto } from '../../../dtos/CreateReportDto';
@@ -12,19 +12,18 @@ import { ReportTerritoryItemFormComponent } from "../report-territory-item-form/
 import { ReportTerritoryItem } from '../../../model/ReportTerritoryItem';
 import { CommonModule } from '@angular/common';
 import { ReportTerritoryBlockItem } from '../../../model/ReportTerritoryBlockItem';
+import { ScheduleSelectComponent } from "../../schedules/schedule-select/schedule-select.component";
+import { UsersSelectComponent } from "../../users/users-select/users-select.component";
 
 @Component({
   selector: 'app-report-form',
-  imports: [ReactiveFormsModule, ModalComponent, SchedulesManagementComponent, UsersManagementComponent, ReportTerritoryItemFormComponent, CommonModule],
+  imports: [ReactiveFormsModule, ModalComponent, ReportTerritoryItemFormComponent, CommonModule, ScheduleSelectComponent, UsersSelectComponent],
   standalone: true,
   templateUrl: './report-form.component.html',
   styleUrl: './report-form.component.css'
 })
 export class ReportFormComponent implements OnInit, AfterViewInit {
 
- 
-
-  
   @Input({required: true}) modalId: string;
   
   @Input() isEdit = false;
@@ -32,9 +31,8 @@ export class ReportFormComponent implements OnInit, AfterViewInit {
   @Output() saveEvent = new EventEmitter();
 
   @ViewChild('main') modalComponent: ModalComponent;
-
-  @ViewChild('scheduleModal') scheduleModal: ModalComponent;
-  @ViewChild('userModal') userModal: ModalComponent;
+  @ViewChild(ScheduleSelectComponent) scheduleSelectComponent: ScheduleSelectComponent;
+  @ViewChild(UsersSelectComponent) usersSelectComponent: UsersSelectComponent;
   @ViewChild('reportTerritoryItemForm') reportTerritoryItemForm: ReportTerritoryItemFormComponent;
 
   reportTerritoryItems: ReportTerritoryItem[] = [];
@@ -46,21 +44,33 @@ export class ReportFormComponent implements OnInit, AfterViewInit {
     private readonly fb: FormBuilder
   ) {}
   ngAfterViewInit(): void {
-  }
+    this.scheduleSelectComponent.getSelected$().subscribe({
+      next: (schedule) => {
+        
+        schedule && this.reportFormGroup.get('scheduleId').setValue(schedule.id);
+      }
+    });
+    this.usersSelectComponent.getSelected$().subscribe({
+      next: (user) => {
+        user && this.reportFormGroup.get('preachingDriverId').setValue(user.id);
+      }
+    });
+  } 
+
 
   ngOnInit(): void {
     this.reportFormGroup = this.fb.group({
-      date: [null],
-      scheduleId: [null],
-      scheduleName: new FormControl({value: null, disabled: true}),
-      conductorCompleteName: new FormControl({value: null, disabled: true}),
-      preachingDriverId: [null],
-      observations: [null],
+      date: new FormControl(new Date(), [Validators.required]),
+      scheduleId: new FormControl({value: null}),
+      preachingDriverId: new FormControl({value: null}),
+      observations: new FormControl('', [Validators.maxLength(250)]),
     });
   }
 
   openModal(): void {
     this.modalComponent.openModal();
+    this.scheduleSelectComponent.loadAllData();
+    this.usersSelectComponent.loadAllData();
   }
   closeModal() {
     this.modalComponent.closeModal();
@@ -78,6 +88,7 @@ export class ReportFormComponent implements OnInit, AfterViewInit {
     this.save(data);
   }
   save(data: CreateReportDto) {
+    console.log({data});
     setTimeout(() => {
       this.reportService.create(data).subscribe({
         next: (report) => {
@@ -93,19 +104,6 @@ export class ReportFormComponent implements OnInit, AfterViewInit {
     }, 500);
   }
 
-  openScheduleManagement() {
-    this.scheduleModal.openModal();
-  }
-  closeScheduleManagement() {
-    this.scheduleModal.closeModal();
-  }
-  openUserManagement() {
-    this.userModal.openModal();
-  }
-  closeUserManagement() {
-    this.userModal.closeModal();
-  }
-
   openReportTerritoryItemForm() {
     this.reportTerritoryItemForm.openModal();
   }
@@ -116,15 +114,8 @@ export class ReportFormComponent implements OnInit, AfterViewInit {
   onScheduleSelected(schedule: Schedule) {
     this.reportFormGroup.get('scheduleId').setValue(schedule.id);
     this.reportFormGroup.get('scheduleName').setValue(schedule.name + ' / ' + schedule.time);
-    this.scheduleModal.closeModal();
-  }
-  onUserSelected(user: User) {
-    this.reportFormGroup.get('preachingDriverId').setValue(user.id);
-    this.reportFormGroup.get('conductorCompleteName').setValue(`${user.names} ${user.lastNames}`);
-    this.userModal.closeModal();
   }
   onAddReportTerritoryItem(reportTerritoryItem: ReportTerritoryItem) {
-    console.log({reportTerritoryItem});
     this.reportTerritoryItems.push(reportTerritoryItem);
   }
   getBlocksJoined(reportTerritoryBlockItems: ReportTerritoryBlockItem[]): string {

@@ -14,7 +14,7 @@ export class ReportService implements IHttpService<Report> {
   private baseUrl = 'http://localhost:4000/reports';
   constructor(private http: HttpClient) { }
 
-  getAll(queryParams?: GetReportsQueryParamsDto): Observable<ListResponseDto<Report>> {
+  getAllPaginated(queryParams?: GetReportsQueryParamsDto): Observable<ListResponseDto<Report>> {
     queryParams ??= new GetReportsQueryParamsDto();
     const params = new URLSearchParams(JSON.parse(JSON.stringify(queryParams))).toString();
     return this.http.get<ListResponseDto<Report>>(this.baseUrl + '?' + params);
