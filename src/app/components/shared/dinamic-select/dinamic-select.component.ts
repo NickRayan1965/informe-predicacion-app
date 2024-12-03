@@ -45,6 +45,8 @@ export class DinamicSelectComponent implements OnInit {
     if (this.idsToExclude.includes(this.selectedValue)) {
       this.selectedValue = '';
     }
+    this.selected.next(null);
+    this.selectedValue = '';
     this.isAllDataLoaded = false;
     this.data = [];
     this.service.loadAllData$<any>({query: this.query, pageSize: 100}).subscribe({
@@ -92,10 +94,12 @@ export class DinamicSelectComponent implements OnInit {
     return this.selected.asObservable();
   }
   setSelected$(value: any) {
-    const ref = this.data.find((item) => item[this.valueField].toString() === value.toString());
-    if (!ref) {
+    if (!value) {
+      this.selectedValue = '';
+      this.selected.next(null);
       return;
     }
+    const ref = this.data.find((item) => item[this.valueField]?.toString() === value[this.valueField]?.toString());
     this.selectedValue = ref[this.valueField].toString();
     this.selected.next(ref);
   }

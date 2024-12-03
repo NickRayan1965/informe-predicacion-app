@@ -41,12 +41,21 @@ export class ReportTerritoryItemFormComponent implements AfterViewInit {
   ) {
     this.reportTerritoryItemFormGroup = this.formBuilder.group({
       territoryId: new FormControl('', [Validators.required]),
+      territoryName: new FormControl('', [Validators.required]),
       observations: new FormControl('', [Validators.maxLength(250)]),
     });
   }
   ngAfterViewInit(): void {
     this.territoriesSelectComponent.getSelected$().subscribe({
       next: (territory) => {
+        if (!territory) {
+          Promise.resolve().then(() => {
+            this.disabledAddBlockSubject.next(true);
+            this.reportTerritoryItemFormGroup.get('territoryId').setValue('');
+            this.reportTerritoryItemFormGroup.get('territoryName').setValue('');
+            this.territory = null;
+          });
+        }
         Promise.resolve().then(() => {
           // if (this.reportTerritoryBlockItems.length) {
 
@@ -110,6 +119,8 @@ export class ReportTerritoryItemFormComponent implements AfterViewInit {
     this.reportTerritoryBlockItems = [];
     this.reportTerritoryItemFormGroup.reset();
     this.reportTerritoryBlockItemForm.setTerritory(null);
+    this.territoriesSelectComponent.setDisabled(false);
+    this.territoriesSelectComponent.setSelected$(null);
     this.closeModal();
   }
   setBlockIdsToExclude(ids: string[]): void {

@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { ReportTerritoryBlockItem } from '../../../model/ReportTerritoryBlockItem';
 import { ScheduleSelectComponent } from "../../schedules/schedule-select/schedule-select.component";
 import { UsersSelectComponent } from "../../users/users-select/users-select.component";
+import { CreateReportTerritoryItemDto } from '../../../dtos/CreateReportTerritoryItemDto';
 
 @Component({
   selector: 'app-report-form',
@@ -42,11 +43,17 @@ export class ReportFormComponent implements OnInit, AfterViewInit {
   constructor(
     private readonly reportService: ReportService,
     private readonly fb: FormBuilder
-  ) {}
+  ) {
+    this.reportFormGroup = this.fb.group({
+      date: new FormControl('', [Validators.required]),
+      scheduleId: new FormControl('', [Validators.required]),
+      preachingDriverId: new FormControl('', [Validators.required]),
+      observations: new FormControl('', [Validators.maxLength(250)]),
+    });
+  }
   ngAfterViewInit(): void {
     this.scheduleSelectComponent.getSelected$().subscribe({
       next: (schedule) => {
-        
         schedule && this.reportFormGroup.get('scheduleId').setValue(schedule.id);
       }
     });
@@ -77,6 +84,20 @@ export class ReportFormComponent implements OnInit, AfterViewInit {
   }
   onSubmit(): void {
     const data: CreateReportDto = this.reportFormGroup.value;
+    data.items = this.reportTerritoryItems.map(item => {
+      return {
+        territoryId: item.territory.id,
+        observations: item.observations,
+        completed: item.completed,
+        blocks: item.blocks.map(reportTerritoryBlockItem => {
+          return {
+            blockId: reportTerritoryBlockItem.blockId,
+            observations: reportTerritoryBlockItem.observations,
+            completed: reportTerritoryBlockItem.completed
+          };
+        })
+      } as CreateReportTerritoryItemDto;
+    });
     Swal.fire({
       title: 'Guardando...',
       text: 'Por favor espere',
@@ -94,14 +115,21 @@ export class ReportFormComponent implements OnInit, AfterViewInit {
         next: (report) => {
           this.saveEvent.emit();
           this.closeModal();
-          this.reportFormGroup.reset();
+          this.resetForm();
           Swal.fire('Reporte creado', `Reporte para el ${report.date} - ${report.schedule.name} creado con éxito`, 'success');
         },
         error(err) {
+          console.error(err);
           Swal.fire('Error', 'Ocurrió un error al crear el reporte', 'error');
         },
       });    
     }, 500);
+  }
+  private resetForm() {
+    this.reportFormGroup.reset();
+    this.reportTerritoryItems = [];
+    this.scheduleSelectComponent.setSelected$(null);
+    this.usersSelectComponent.setSelected$(null);
   }
 
   openReportTerritoryItemForm() {
@@ -119,6 +147,19 @@ export class ReportFormComponent implements OnInit, AfterViewInit {
     this.reportTerritoryItems.push(reportTerritoryItem);
   }
   getBlocksJoined(reportTerritoryBlockItems: ReportTerritoryBlockItem[]): string {
-    return reportTerritoryBlockItems.map(item => item.blockName).join(', ');
+    // return reportTerritoryBlockItems.map(item => item.blockName).join(', ');
+    const areMoreThanOne = reportTerritoryBlockItems.length > 1;
+    return reportTerritoryBlockItems.map((item, index) => {
+      if (!areMoreThanOne) {
+        return item.blockName;
+      }
+      if (index === reportTerritoryBlockItems.length - 2) {
+        return `${item.blockName} y `;
+      }else if (index === reportTerritoryBlockItems.length - 1) {
+        return item.blockName;
+      }
+      return `${item.blockName}, `;
+    }).join('');
   }
+
 }
