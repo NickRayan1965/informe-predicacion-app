@@ -1,9 +1,12 @@
-<app-view>
+<app-view >
   <div class="col-12 d-flex justify-content-center align-items-center">
     <button class="btn btn-primary" (click)="openModal()">
       <i class="fa-solid fa-plus"></i>
       Crear Reporte
     </button>    
+  </div>
+  <div class="mt-3">
+    <app-report-table/>
   </div>
 </app-view>
 <app-report-form modalId=""></app-report-form>

@@ -1,18 +1,21 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { PageableTableComponent } from '../../shared/pageable-table/pageable-table.component';
 import { GetReportsQueryParamsDto } from '../../../dtos/GetReportsQueryParamsDto';
 import { TableItemConfig } from '../../../model/TableConfig';
-import { Report } from '../../../model/Report';
+import { Report, ReportPlained } from '../../../model/Report';
 import { ReportService } from '../../../services/ReportService';
+import { map } from 'rxjs';
+import { ListResponseDto } from '../../../dtos/ListResponseDto';
 
 @Component({
   selector: 'app-report-table',
-  imports: [],
+  imports: [PageableTableComponent],
   standalone: true,
   templateUrl: './report-table.component.html',
   styleUrl: './report-table.component.css'
 })
-export class ReportTableComponent {
+export class ReportTableComponent implements OnInit {
+  
   @ViewChild(PageableTableComponent) pageableTableComponent: PageableTableComponent;
 
   @Input() tableClasses: string[] = [];
@@ -35,11 +38,42 @@ export class ReportTableComponent {
     {
       columnLabel: 'Territorios',
       valueReference: 'territoriesPlained'
+    },
+    {
+      columnLabel: 'Conductor',
+      valueReference: 'preachingCompleteName'
     }
   ];
   constructor(
     public readonly reportService: ReportService,
   ) {}
-  
+  ngOnInit(): void {
+    this.queryParams = new GetReportsQueryParamsDto();
+  }
+  getData(queryParams?: Partial<GetReportsQueryParamsDto>): void {
+    if (queryParams) {
+      this.queryParams = { ...this.queryParams, ...queryParams };
+    }
+    this.pageableTableComponent.getData(this.queryParams, map((response: ListResponseDto<Report>) => {
+      console.log({response});
+      const {data, ...rest} = response;
+      const tranformed: ListResponseDto<ReportPlained> = {
+        ...rest,
+        data: data.map(Report.toReportPlained)
+      };
+      return tranformed;
+    }));
+  }
+  onReportSelectedEvent(report: Report): void {
+    if (this.isForSelection) {
+      this.onReportSelected.emit(report);
+    }
+  }
+  setIdsToExclude(ids: number[]): void {
+    this.pageableTableComponent.setIdsToExclude(ids);
+  }
+  getRawResponse(): ListResponseDto<ReportPlained> {
+    return this.pageableTableComponent.getRawResponse<ReportPlained>();
+  }
 
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-view',
@@ -7,4 +7,7 @@ import { Component } from '@angular/core';
   templateUrl: './view.component.html',
   styleUrl: './view.component.css'
 })
-export class ViewComponent {}
+export class ViewComponent {
+  @Input() width: string;
+  @Input() height: string = '85%';
+}
