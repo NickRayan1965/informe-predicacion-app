@@ -7,7 +7,7 @@
           <th *ngFor="let column of tableItemsConfig">
             {{ column.columnLabel }}
           </th>
-          <th *ngIf="isForSelection" class="d-flex justify-content-center">
+          <th *ngIf="isForSelection || isForEdit" class="d-flex justify-content-center">
             Acciones
           </th>
         </tr>
@@ -17,10 +17,18 @@
           <td *ngFor="let column of tableItemsConfig">
             {{ getTextForColumnLabel(item, column.valueReference) }}
           </td>
-          <td *ngIf="isForSelection" class="d-flex justify-content-center">
-            <button class="btn btn-primary" (click)="selectItem(item)">Seleccionar</button>
+          <td *ngIf="isForSelection || isForEdit">
+            <div class="d-flex justify-content-center">
+              <button class="btn btn-primary me-2" (click)="onEdit(item)" *ngIf="isForEdit">
+                Editar
+              </button>
+              <button class="btn btn-primary" (click)="selectItem(item)" *ngIf="isForSelection">
+                Seleccionar
+              </button>
+            </div>
           </td>
         </tr>
+      </tbody>
     </table>
   </div>
   <nav aria-label="Navegación" class="d-flex justify-content-center mt-2">

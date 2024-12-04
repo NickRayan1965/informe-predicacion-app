@@ -31,6 +31,7 @@
           <table class="table table-striped border border-2">
             <thead>
               <tr>
+                <th>No.</th>
                 <th>Manzana</th>
                 <th>Avance</th>
                 <th class="text-center">Acciones</th>
@@ -39,9 +40,10 @@
             <tbody>
               <tr
                 *ngFor="
-                  let reportTerritoryBlockItem of reportTerritoryBlockItems
+                  let reportTerritoryBlockItem of reportTerritoryBlockItems; let i = index
                 "
               >
+                <td>{{ i + 1 }}</td>
                 <td>
                   {{ reportTerritoryBlockItem.blockName }}
                 </td>
@@ -55,7 +57,7 @@
                   <!-- <button class="btn btn-primary me-2">
                     <i class="fa-solid fa-pencil"></i>
                   </button> -->
-                  <button class="btn btn-danger">
+                  <button class="btn btn-danger" (click)="onRemoveReportTerritoryBlockItem(i)" type="button">
                     <i class="fa-solid fa-trash"></i>
                   </button>
                 </td>

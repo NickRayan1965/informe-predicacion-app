@@ -25,6 +25,7 @@ import { CreateReportTerritoryItemDto } from '../../../dtos/CreateReportTerritor
 })
 export class ReportFormComponent implements OnInit, AfterViewInit {
 
+
   @Input({required: true}) modalId: string;
   
   @Input() isEdit = false;
@@ -80,6 +81,7 @@ export class ReportFormComponent implements OnInit, AfterViewInit {
     this.usersSelectComponent.loadAllData();
   }
   closeModal() {
+    this.resetForm();
     this.modalComponent.closeModal();
   }
   onSubmit(): void {
@@ -162,5 +164,7 @@ export class ReportFormComponent implements OnInit, AfterViewInit {
       return `${item.blockName}, `;
     }).join('');
   }
-
+  removeReportTerritoryItem(nro_item: number) {
+    this.reportTerritoryItems.splice(nro_item, 1);
+  }
 }

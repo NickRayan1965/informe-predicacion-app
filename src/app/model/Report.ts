@@ -15,6 +15,7 @@ export class Report {
     return {
       ...report,
       schedulePlained: report.schedule.name + ' / ' + report.schedule.startHour + ' - ' + report.schedule.endHour,
+      preachingCompleteName: `${report.preachingUserNames} ${report.preachingUserLastNames}`,
       territoriesPlained: report.items?.map((reportTerritoryItem, index) => {
         if (areThereOnlyOneTerritory || index === report.items.length - 1) {
           return reportTerritoryItem.territory.name;

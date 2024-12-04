@@ -21,4 +21,7 @@ export class ReportViewComponent implements AfterViewInit{
   openModal() {
     this.modal.openModal();
   }
+  onSaveEvent() {
+    this.table.getData();
+  }
 }

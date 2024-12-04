@@ -77,6 +77,7 @@ export class ReportTerritoryItemFormComponent implements AfterViewInit {
     this.territoriesSelectComponent.loadAllData();
   }
   closeModal(): void {
+    this.cleanForm();
     this.modal.closeModal();
   }
   openReportTerritoryBlockItemForm(): void {
@@ -96,6 +97,11 @@ export class ReportTerritoryItemFormComponent implements AfterViewInit {
     this.territoriesSelectComponent.setDisabled(true);
     this.reportTerritoryBlockItemForm.setBlockIdsToExclude(this.reportTerritoryBlockItems.map(item => item.blockId.toString()));
     this.closeReportTerritoryBlockItemForm();
+  }
+  onRemoveReportTerritoryBlockItem(item_number: number): void {
+    console.log({item_number});
+    this.reportTerritoryBlockItems.splice(item_number, 1);
+    this.reportTerritoryBlockItemForm.setBlockIdsToExclude(this.reportTerritoryBlockItems.map(item => item.blockId.toString()));
   }
 
   canAddReportTerritoryBlockItem(): boolean {
@@ -125,5 +131,12 @@ export class ReportTerritoryItemFormComponent implements AfterViewInit {
   }
   setBlockIdsToExclude(ids: string[]): void {
     this.reportTerritoryBlockItemForm.setBlockIdsToExclude(ids);
+  }
+  cleanForm(): void {
+    this.reportTerritoryBlockItems = [];
+    this.reportTerritoryItemFormGroup.reset();
+    this.reportTerritoryBlockItemForm.setTerritory(null);
+    this.territoriesSelectComponent.setDisabled(false);
+    this.territoriesSelectComponent.setSelected$(null);
   }
 }

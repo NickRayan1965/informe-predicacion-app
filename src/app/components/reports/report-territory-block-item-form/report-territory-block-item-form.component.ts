@@ -63,6 +63,7 @@ export class ReportTerritoryBlockItemFormComponent implements AfterViewInit{
     this.blockSelectComponent.loadAllData();
   }
   closeModal() {
+    this.cleanForm();
     this.modal.closeModal();
   }
 
@@ -91,5 +92,9 @@ export class ReportTerritoryBlockItemFormComponent implements AfterViewInit{
   }
   getTotalBlocks() {
     return this.blockSelectComponent.getTotalElements();
+  }
+  cleanForm() {
+    this.reportTerritoryBlockItemFormGroup.reset();
+    this.territory = null;
   }
 }

@@ -26,7 +26,15 @@ export class ScheduleSelectComponent {
     },
     {
       type: 'property',
-      value: 'time'
+      value: 'startHour'
+    },
+    {
+      type: 'raw',
+      value: ' - '
+    },
+    {
+      type: 'property',
+      value: 'endHour'
     }
   ];
   @ViewChild(DinamicSelectComponent) dinamicSelectComponent: DinamicSelectComponent;

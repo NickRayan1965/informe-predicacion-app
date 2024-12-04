@@ -43,6 +43,7 @@
           <table class="table table-striped border border-2">
             <thead>
               <tr>
+                <th>No.</th>
                 <th>Territorio</th>
                 <th>Manzanas</th>
                 <th>Avance</th>
@@ -50,7 +51,10 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let reportTerritoryItem of reportTerritoryItems">
+              <tr *ngFor="let reportTerritoryItem of reportTerritoryItems; let i = index">
+                <td>
+                  {{ i + 1 }}
+                </td>
                 <td>
                   {{ reportTerritoryItem.territory.name }}
                 </td>
@@ -61,10 +65,10 @@
                   {{reportTerritoryItem.completed ? 'Completo': 'Parcial'}}
                 </td>
                 <td>
-                  <button class="btn btn-primary me-2" type="button">
+                  <!-- <button class="btn btn-primary me-2" type="button">
                     <i class="fa-solid fa-pencil"></i>
-                  </button>
-                  <button class="btn btn-danger" type="button">
+                  </button> -->
+                  <button class="btn btn-danger" type="button" (click)="removeReportTerritoryItem(i)">
                     <i class="fa-solid fa-trash"></i>
                   </button>
                 </td>

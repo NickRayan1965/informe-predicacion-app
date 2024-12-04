@@ -22,6 +22,9 @@ export class PageableTableComponent implements OnInit {
   @Input({required: true}) tableItemsConfig: TableItemConfig[];
   
   @Input() isForSelection: boolean = false;
+
+  @Input() isForEdit: boolean = false;
+  @Output() onEditItem = new EventEmitter<any>();
   
   @Input() tableClasses: string[] = [];
   @Input() idsToExclude: number[] = [];
@@ -116,5 +119,8 @@ export class PageableTableComponent implements OnInit {
 
   getDataToDisplay(): any[] {   
     return this.content.data.filter(item => !this.idsToExclude.includes(item[this.idColumnName]));
+  }
+  onEdit(item: any): void {
+    this.onEditItem.emit(item);
   }
 }
