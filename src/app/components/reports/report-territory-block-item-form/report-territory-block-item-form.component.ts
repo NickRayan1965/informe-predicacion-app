@@ -38,7 +38,7 @@ export class ReportTerritoryBlockItemFormComponent implements AfterViewInit{
   ) {
     this.reportTerritoryBlockItemFormGroup = this.formBuilder.group({
       blockId: new FormControl({value: '', disabled: false}, [Validators.required]),
-      blockName: new FormControl({value: '', disabled: true}),
+      blockName: new FormControl('', [Validators.required]),
       observations: new FormControl('', [Validators.maxLength(250)]),
       completed: new FormControl(false)
     });
@@ -73,17 +73,18 @@ export class ReportTerritoryBlockItemFormComponent implements AfterViewInit{
     if (!this.reportTerritoryBlockItemFormGroup.valid) {
       Swal.fire('Error', 'Formulario inválido', 'error');
     }
-    const dto = this.reportTerritoryBlockItemFormGroup.getRawValue();
+    const dto = this.reportTerritoryBlockItemFormGroup.value;
     const entity: ReportTerritoryBlockItem = {
       id: null,
       blockId: dto.blockId,
       blockName: dto.blockName,
       reportTerritoryItemId: null,
       observations: dto.observations,
-      completed: dto.completed
+      completed: Boolean(dto.completed)
     };
-    this.reportTerritoryBlockItemFormGroup.reset();
     this.onAdd.emit(entity);
+    console.log({entity});
+    this.reportTerritoryBlockItemFormGroup.reset();
   }
   setBlockIdsToExclude(ids: string[]) {
     this.blockSelectComponent.setIdsToExclude(ids);

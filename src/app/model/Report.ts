@@ -30,4 +30,5 @@ export class Report {
 export class ReportPlained extends Report {
   territoriesPlained?: string;
   schedulePlained?: string;
+  preachingCompleteName?: string;
 }

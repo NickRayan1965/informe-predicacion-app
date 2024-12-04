@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ListResponseDto } from '../../../dtos/ListResponseDto';
 import { IColumnName, TableItemConfig } from '../../../model/TableConfig';
 import { Territory } from '../../../model/Territory';
+import { map, OperatorFunction } from 'rxjs';
 
 @Component({
   selector: 'app-pageable-table',
@@ -16,7 +17,7 @@ import { Territory } from '../../../model/Territory';
 export class PageableTableComponent implements OnInit {
 
   @Input({required:true}) httpService: IHttpService<any>;
-  @Input({required: true}) maxSelectablePages: number;
+  @Input() maxSelectablePages: number = 3;
   @Input({required: true}) queryParams: PaginationDto;
   @Input({required: true}) tableItemsConfig: TableItemConfig[];
   
@@ -40,10 +41,14 @@ export class PageableTableComponent implements OnInit {
     //this.getData();
   }
 
-  getData(queryParams?: PaginationDto): void {
+  getData(queryParams?: PaginationDto, transformer?: OperatorFunction<any, any>): void {
     if (queryParams) this.queryParams = queryParams;
-    this.httpService.getAllPaginated(this.queryParams).subscribe(data => {
-      this.content = data;
+    let observable =  this.httpService.getAllPaginated(this.queryParams);
+    if (transformer) {
+      observable = observable.pipe(transformer);
+    }
+    observable.subscribe((response) => {
+      this.content = response;
     });
   }
   getRawResponse<T>(): ListResponseDto<T> {
