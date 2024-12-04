@@ -26,7 +26,23 @@ export class SchedulesTablesComponent implements OnInit {
   queryParams: GetSchedulesQueryParamsDto;
   tableItemsConfig: TableItemConfig[] = [
     { columnLabel: 'Nombre', valueReference: 'name' },
-    { columnLabel: 'Hora', valueReference: 'time' }
+    { 
+      columnLabel: 'Hora',
+      valueReference: [
+        {
+          type: 'property',
+          value: 'startHour'
+        },
+        {
+          type: 'text',
+          value: ' - '
+        },
+        {
+          type: 'property',
+          value: 'endHour'
+        }
+      ]
+    }
   ];
 
   constructor(

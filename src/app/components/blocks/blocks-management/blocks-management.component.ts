@@ -55,7 +55,9 @@ export class BlocksManagementComponent implements OnInit, AfterViewInit {
 
   constructor(private readonly blockService: BlockService) {}
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    this.getData();
+  }
 
   ngOnInit(): void {
     this.blockService.loadAllData$({ pageSize: 2 }).subscribe({

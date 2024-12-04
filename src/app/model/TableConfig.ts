@@ -1,5 +1,6 @@
 export interface IColumnName {
-  columnName: string;
+  type: 'property' | 'text';
+  value: string;
 }
 export class TableItemConfig {
   columnLabel: string;

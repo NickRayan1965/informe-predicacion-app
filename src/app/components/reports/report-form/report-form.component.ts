@@ -141,7 +141,8 @@ export class ReportFormComponent implements OnInit, AfterViewInit {
 
   onScheduleSelected(schedule: Schedule) {
     this.reportFormGroup.get('scheduleId').setValue(schedule.id);
-    this.reportFormGroup.get('scheduleName').setValue(schedule.name + ' / ' + schedule.time);
+    this.reportFormGroup.get('scheduleName').setValue(schedule.name + ' / ' + schedule.
+    startHour + ' - ' + schedule.endHour);
   }
   onAddReportTerritoryItem(reportTerritoryItem: ReportTerritoryItem) {
     this.reportTerritoryItems.push(reportTerritoryItem);

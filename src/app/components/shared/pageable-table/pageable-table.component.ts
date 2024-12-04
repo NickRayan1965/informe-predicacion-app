@@ -96,7 +96,8 @@ export class PageableTableComponent implements OnInit {
     }
     let text = '';
     columnName.forEach((column, index) => {
-      text += item[column.columnName]?.toString() ?? '';
+      // item[column.columnName]?.toString() ?? '';
+      text += column.type === 'property' ? item[column.value]?.toString() : column.value; 
       if (index < columnName.length - 1) {
         text += ' ';
       }

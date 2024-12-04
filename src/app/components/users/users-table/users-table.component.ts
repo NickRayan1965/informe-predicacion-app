@@ -27,8 +27,8 @@ export class UsersTableComponent implements OnInit{
     {
       columnLabel: 'Nombre completo',
       valueReference: [
-        {columnName: 'names'},
-        {columnName: 'lastNames'}
+        {value: 'names', type: 'property'},
+        {value: 'lastNames', type: 'property'}  
       ]
     }
   ];

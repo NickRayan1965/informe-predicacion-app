@@ -14,7 +14,7 @@ export class Report {
     const areThereOnlyOneTerritory = report.items?.length === 1;
     return {
       ...report,
-      schedulePlained: report.schedule.name + ' / ' + report.schedule.time,
+      schedulePlained: report.schedule.name + ' / ' + report.schedule.startHour + ' - ' + report.schedule.endHour,
       territoriesPlained: report.items?.map((reportTerritoryItem, index) => {
         if (areThereOnlyOneTerritory || index === report.items.length - 1) {
           return reportTerritoryItem.territory.name;
