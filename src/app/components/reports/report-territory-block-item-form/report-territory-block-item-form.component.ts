@@ -84,7 +84,6 @@ export class ReportTerritoryBlockItemFormComponent implements AfterViewInit{
       completed: Boolean(dto.completed)
     };
     this.onAdd.emit(entity);
-    console.log({entity});
     this.reportTerritoryBlockItemFormGroup.reset();
   }
   setBlockIdsToExclude(ids: string[]) {

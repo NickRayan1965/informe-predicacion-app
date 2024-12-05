@@ -127,6 +127,7 @@ export class ReportTerritoryItemFormComponent implements AfterViewInit {
     this.reportTerritoryBlockItemForm.setTerritory(null);
     this.territoriesSelectComponent.setDisabled(false);
     this.territoriesSelectComponent.setSelected$(null);
+    this.reportTerritoryBlockItemForm.setBlockIdsToExclude([]);
     this.closeModal();
   }
   setBlockIdsToExclude(ids: string[]): void {

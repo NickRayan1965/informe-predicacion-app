@@ -85,7 +85,9 @@ export class BlocksManagementComponent implements OnInit, AfterViewInit {
     this.territoryName = territory.name;
     this.blocksTablesComponent.queryParams.territoryId = this.territoryId;
     this.territoriesModalComponent.closeModal();
-    this.getData();
+    this.getData({
+      page: 1,
+    });
   }
   openTerritoryManagement() {
     this.territoriesModalComponent.openModal();

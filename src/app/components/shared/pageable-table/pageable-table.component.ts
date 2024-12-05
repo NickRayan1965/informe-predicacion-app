@@ -6,10 +6,11 @@ import { ListResponseDto } from '../../../dtos/ListResponseDto';
 import { IColumnName, TableItemConfig } from '../../../model/TableConfig';
 import { Territory } from '../../../model/Territory';
 import { map, OperatorFunction } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-pageable-table',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   standalone: true,
   templateUrl: './pageable-table.component.html',
   styleUrl: './pageable-table.component.css'
@@ -32,6 +33,11 @@ export class PageableTableComponent implements OnInit {
 
   @Output() onSelectItem = new EventEmitter<any>();
 
+  @Input() dataTransformer: OperatorFunction<any, any>;
+
+  isLoading = false;
+  numberPageForOptimisticUpdate = 1;
+
   content: ListResponseDto<any>;
 
   selectItem(item: Territory): void {
@@ -44,13 +50,20 @@ export class PageableTableComponent implements OnInit {
     //this.getData();
   }
 
-  getData(queryParams?: PaginationDto, transformer?: OperatorFunction<any, any>): void {
-    if (queryParams) this.queryParams = queryParams;
+  getData(queryParams?: PaginationDto): void {
+    if (queryParams) {
+      this.queryParams = queryParams;
+      if(this.queryParams.page) {
+        this.numberPageForOptimisticUpdate = this.queryParams.page;
+      }
+    };
     let observable =  this.httpService.getAllPaginated(this.queryParams);
-    if (transformer) {
-      observable = observable.pipe(transformer);
+    if (this.dataTransformer) {
+      observable = observable.pipe(this.dataTransformer);
     }
+    this.isLoading = true;
     observable.subscribe((response) => {
+      this.isLoading = false;
       this.content = response;
     });
   }
@@ -58,6 +71,10 @@ export class PageableTableComponent implements OnInit {
     return this.content;
   }
   changePage(page: number): void {
+    if (this.isLoading) {
+      return;
+    }
+    this.numberPageForOptimisticUpdate = page;
     this.queryParams.page = page;
     this.getData();
   }
@@ -86,6 +103,7 @@ export class PageableTableComponent implements OnInit {
     if (page > this.content.totalPages) {
       page = this.content.totalPages;
     }
+    this.numberPageForOptimisticUpdate = page;
     this.queryParams.page = page;
     this.getData();
   }
@@ -94,6 +112,7 @@ export class PageableTableComponent implements OnInit {
     if (page < 1) {
       page = 1;
     }
+    this.numberPageForOptimisticUpdate = page;
     this.queryParams.page = page;
     this.getData();
   }

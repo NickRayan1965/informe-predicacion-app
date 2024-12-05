@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { PageableTableComponent } from '../../shared/pageable-table/pageable-table.component';
 import { GetReportsQueryParamsDto } from '../../../dtos/GetReportsQueryParamsDto';
 import { TableItemConfig } from '../../../model/TableConfig';
@@ -26,6 +26,14 @@ export class ReportTableComponent implements OnInit {
 
   maxSelectablePages = 3;
   queryParams: GetReportsQueryParamsDto;
+  dataTransformer = map((response: ListResponseDto<Report>) => {
+    const {data, ...rest} = response;
+    const tranformed: ListResponseDto<ReportPlained> = {
+      ...rest,
+      data: data.map(Report.toReportPlained)
+    };
+    return tranformed;
+  });
   tableItemsConfig: TableItemConfig[] = [
     {
       columnLabel: 'Fecha',
@@ -47,6 +55,9 @@ export class ReportTableComponent implements OnInit {
   constructor(
     public readonly reportService: ReportService,
   ) {}
+  ngAfterViewInit(): void {
+    throw new Error('Method not implemented.');
+  }
   ngOnInit(): void {
     this.queryParams = new GetReportsQueryParamsDto();
   }
@@ -54,15 +65,7 @@ export class ReportTableComponent implements OnInit {
     if (queryParams) {
       this.queryParams = { ...this.queryParams, ...queryParams };
     }
-    this.pageableTableComponent.getData(this.queryParams, map((response: ListResponseDto<Report>) => {
-      console.log({response});
-      const {data, ...rest} = response;
-      const tranformed: ListResponseDto<ReportPlained> = {
-        ...rest,
-        data: data.map(Report.toReportPlained)
-      };
-      return tranformed;
-    }));
+    this.pageableTableComponent.getData();
   }
   onReportSelectedEvent(report: Report): void {
     if (this.isForSelection) {

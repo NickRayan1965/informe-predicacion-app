@@ -47,3 +47,6 @@ html, body {
 
   background-color: rgba(0,0,0, 0.0);
 }
+.no-selectable {
+  user-select: none;
+}
