@@ -7,5 +7,7 @@ export class ReportTerritoryItem {
   reportId?: number;
   observations?: string;
   completed?: boolean;
+  flagCompletedByDriver?: boolean;
+  flagWasTheTerritoryOpened?: boolean;
   blocks?: ReportTerritoryBlockItem[] = [];
 }

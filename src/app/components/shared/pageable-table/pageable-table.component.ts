@@ -61,10 +61,12 @@ export class PageableTableComponent implements OnInit {
     if (this.dataTransformer) {
       observable = observable.pipe(this.dataTransformer);
     }
-    this.isLoading = true;
-    observable.subscribe((response) => {
-      this.isLoading = false;
-      this.content = response;
+    Promise.resolve().then(() => {
+      this.isLoading = true;
+      observable.subscribe((response) => {
+        this.isLoading = false;
+        this.content = response;
+      });
     });
   }
   getRawResponse<T>(): ListResponseDto<T> {

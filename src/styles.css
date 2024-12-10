@@ -50,3 +50,7 @@ html, body {
 .no-selectable {
   user-select: none;
 }
+.final-asterisk::after {
+  content: "*" !important;
+  color: red !important;
+}

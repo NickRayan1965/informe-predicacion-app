@@ -43,6 +43,8 @@ export class ReportTerritoryItemFormComponent implements AfterViewInit {
       territoryId: new FormControl('', [Validators.required]),
       territoryName: new FormControl('', [Validators.required]),
       observations: new FormControl('', [Validators.maxLength(250)]),
+      flagWasTheTerritoryOpened: new FormControl(false),
+      flagCompletedByDriver: new FormControl(false),
     });
   }
   ngAfterViewInit(): void {
@@ -118,7 +120,9 @@ export class ReportTerritoryItemFormComponent implements AfterViewInit {
         id: data.territoryId,
         name: data.territoryName
       },
-      blocks: this.reportTerritoryBlockItems
+      blocks: this.reportTerritoryBlockItems,
+      flagCompletedByDriver: data.flagCompletedByDriver,
+      flagWasTheTerritoryOpened: data.flagWasTheTerritoryOpened
     };
     console.log({entity});
     this.onAdd.emit(entity);

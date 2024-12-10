@@ -55,9 +55,6 @@ export class ReportTableComponent implements OnInit {
   constructor(
     public readonly reportService: ReportService,
   ) {}
-  ngAfterViewInit(): void {
-    throw new Error('Method not implemented.');
-  }
   ngOnInit(): void {
     this.queryParams = new GetReportsQueryParamsDto();
   }
